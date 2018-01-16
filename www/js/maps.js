@@ -30,7 +30,7 @@ function deg2rad(deg) {
     // onError Callback receives a PositionError object
     //
        function onError(error) {
-          swal("Error","Revisa tu conexión a internet para tener acceso a todas las funciones","error");
+         //swal("Error","Revisa tu conexión a internet para tener acceso a todas las funciones","error");
        }
 
     navigator.geolocation.getCurrentPosition(onSuccess, onError); 
@@ -59,10 +59,10 @@ function deg2rad(deg) {
           map.setCenter(position.coords.latitude, position.coords.longitude);
         },
         error: function(error){
-          alert('Geolocation fallo: '+error.message);
+          //alert('Geolocation fallo: '+error.message);
         },
         not_supported: function(){
-          alert("Tu equipo no soporta esta función");
+         // alert("Tu equipo no soporta esta función");
         },
         always: function(){
           

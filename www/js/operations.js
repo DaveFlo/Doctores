@@ -199,7 +199,7 @@ function checkC(){
         processData:false,
         error: function(xhr, settings, exception){ alert(xhr.responseText)},
         success: function(data){
-        
+        console.log(data);
           $.mobile.loading( "hide" );
           //$("#logac").prop("disabled",false);
           if(data.toString()!=="0"){
