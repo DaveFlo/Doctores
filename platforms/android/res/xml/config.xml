@@ -15,7 +15,7 @@
         PhoneGap Team
     </author>
     <content src="index.html" />
-    <access origin="http://icone-solutions.com/" />
+    <access origin="*" />
     <access origin="http://google.com" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
