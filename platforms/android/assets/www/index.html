@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src *; img-src * 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; style-src  'self' 'unsafe-inline' *" />
+   
+    <!-- Good default declaration:
+    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+    * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+        * Enable inline JS: add 'unsafe-inline' to default-src
+        * Enable eval(): add 'unsafe-eval' to default-src
+    * Create your own at http://cspisawesome.com
+    -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+
+    <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/sweetalert.css" />
+    <link rel="stylesheet" type="text/css" href="css/clndr.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css" />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <script type="text/javascript" src="js/jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+    <title>Doct</title>
+</head>
+
+<body>
+   <!-- Seccción de luis -->
+	
+  <div data-role="page" id="inicio">
+    <div style="margin-top: 2cm">
+      <h1 class="regt">BIENVENIDO</h1>
+      <div data-role="main" class="ui-content logob">
+        <div class="logob">
+          <center><img src="img/1.png" width="100" height="50"></center>
+        </div>
+        <div class="ui-content shadowu">
+          <form id="loginForm" >
+            <input type="text" class="inputg" placeholder="Correo" data-clear-btn="true" name="user"  value="">
+            <br />
+            <input type="password" class="inputg" placeholder="Contraseña" data-clear-btn="true" name="pass"  value="">
+            <br />
+            <center><input  type="submit" class="gbutton" data-role="none" value="Entrar"></center>
+          </form>
+        </div>
+      </div>
+      <div data-role="footer" class="sfoot" data-id="foo1" data-position="fixed">
+        <a href="#registro" class="regt" data-role="none" data-transition="flip">Registrarse</a>
+      </div>
+    </div>
+  </div>
+
+  <div data-role="page" id="registro">
+    <div style="margin-top: 2cm">
+      <h2 class="regt">REGISTRO</h2>
+      <center><img src="img/1.png" width="100" height="50"></center>
+      <div class="ui-content shadowu">
+        <form id="registro" data-ajax="true">
+        <input type="text" class="inputg" placeholder="Nombre" data-clear-btn="true" name="user" id="nombre" value="">
+        <br />
+        <input type="text" class="inputg" placeholder="Correo" data-clear-btn="true" name="user" id="mail" value="">
+        <br />
+        <input type="password" class="inputg" placeholder="Contraseña" data-clear-btn="true" name="pass"  value="">
+        <input type="text" class="inputg" placeholder="Repetir contraseña" data-clear-btn="true" name="user" id="pass" value="">
+        <center><input  type="submit" class="gbutton"  data-role="none" value="Entrar"></center>
+      </form>
+    </div>
+  </div>
+  <div data-role="footer" class="sfoot" data-id="foo1" data-position="fixed">
+    <a href="#registro" class="regt" data-role="none" data-transition="flip">Términos y condiciones</a>
+  </div>
+</div>
+
+<div data-role="page" id="menu">
+  <div style="margin-top: 2cm">
+    <div data-role="main" class="ui-content logob">
+      <div class="logob">
+        <center><img src="img/1.png" width="100" height="50"></center>
+      </div>
+      <br>
+      <br>
+      <table class="menu" align="center">
+        <tr>
+          <td >
+            <center><a href="#"><img src="img/3.png" width="60" height="60"></a></center>
+            <label class="hola">Perfil</label>
+          </td>
+          <td >
+            <center><a href="#calendar_p"  data-transition="slideup"><img src="img/citas.png" width="60" height="60"></a></center>
+            <label class="hola">Citas</label>  
+          </td>
+        </tr>
+        <tr>
+          <td >
+            <center><a ><img src="img/pago.png" width="60" height="60"></a></center>
+            <label class="hola">Pagos</label>  
+          </td>
+          <td >
+            <center><a href="#"><img src="img/conf.png" width="60" height="60"></a></center>
+            <label class="hola">Configuración</label>  
+          </td>
+        </tr>
+      </table>
+      <!--
+      <div class="ui-grid-e">
+        <div class="ui-block-a">
+          <center><img src="img/3.png" width="60" height="60"></center>
+          <label class="hola">Perfil</label>
+        </div>
+        <div class="ui-block-b">
+          <center><img src="img/4.png" width="60" height="60"></center>
+          <label class="hola">Pacientes</label>
+        </div>
+        <div class="ui-block-a">
+          <center><img src="img/6.png" width="60" height="60"></center>
+          <label class="hola">Agenda</label>
+        </div>
+        <div class="ui-block-b">
+          <center><img src="img/7.png" width="60" height="60"></center>
+          <label class="hola">Configuración</label>
+        </div>
+      </div>-->
+    </div>
+  </div>
+</div>
+
+
+  <!-- Seccción de luis -->
+  <!-- david -->
+  <div data-role="page" id="calendar_p">
+
+  <div data-role="header" class="toph-p">
+    <h2 >&nbsp;</h2>
+    <a href="#menu" data-role="none" class="rheader2 ui-btn-left" data-transition="slidedown" >&lsaquo; Citas</a>
+  </div>
+
+  <div data-role="main" class="ui-content calcont">
+  	
+	
+		<ul class="option-tools">
+			<li><a href="#" class="normal-a">Importante</a></li>
+			<li><a href="#" class="normal-a active">Calendario</a></li>
+			<li><a href="#" class="normal-a">Configuración</a></li>
+			<li><a href="#map_search"  data-transition="slide" class="plus-s">+</a></li>
+		</ul>
+	
+
+  	<div id="calp" class="cal2">
+  		<script type="text/template" id="calendar-patient">
+            <div class="clndr-controls">
+                <div class="clndr-previous-button">&lsaquo;</div>
+                <div class="month"><%= intervalStart.format('MMMM YYYY')  %></div>
+                <div class="clndr-next-button">&rsaquo;</div>
+            </div>
+           <div class="clearfix">
+            <% _.each(months, function(cal) { %>
+                <div class="cal">
+                   
+                    <div class="clndr-grid">
+                        <div class="days-of-the-week">
+                        <% _.each(daysOfTheWeek, function(day) { %>
+                            <div class="header-day"><%= day %></div>
+                        <% }); %>
+                            <div class="days">
+                            <% _.each(cal.days, function(day) { %>
+                                <div class="<%= day.classes %>"><%= day.day %></div>
+                            <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+            </div>
+            
+        </script>
+  		
+  	</div>
+  	<hr class="dividerd" />
+  	<div class="appointments">
+  		<table>
+  			
+  		</table>
+  	</div>
+  </div>
+  <div  class="sfootp"  data-position="fixed">
+	
+  </div>
+  </div>
+  
+  <div data-role="page" id="map_search">
+
+  <div data-role="header" class="toph-p">
+    <h2 >&nbsp;</h2>
+    <a data-rel="back" data-role="none" class="rheader2 ui-btn-left"  >&lsaquo; Nueva Cita</a>
+  </div>
+
+  <div data-role="main" class="ui-content mapcont">
+  	
+	
+		<ul class="option-tools items-3">
+			<li><a href="#" class="normal-a">&nbsp;</a></li>
+			<li><a href="#map_search" class="normal-a active">Mapa</a></li>
+			<li><a href="#doctor_list" id="listg" data-transition="slide" class="normal-a">Lista</a></li>
+		</ul>
+	
+      <form method="post" id="geocoding_form">
+      
+       
+        		 
+                <input type="text" class="searchB" placeholder="Búsqueda por especialidad" data-role="none" id="address" name="address" />
+        	
+        		<input type="submit" data-role="none" class="hidden-f" value="" />
+        	
+         
+         
+      
+      </form>
+       <div id="map_canvas">
+       </div>
+  	
+  </div>
+  <div  class="sfootp"  data-position="fixed">
+	
+  </div>
+  </div>
+  
+  <div data-role="page" id="doctor_list">
+
+  <div data-role="header" class="toph-p">
+    <h2 >&nbsp;</h2>
+    <a data-rel="back" data-role="none" class="rheader2 ui-btn-left"  >&lsaquo; Nueva Cita</a>
+  </div>
+
+  <div data-role="main" class="ui-content mapcont">
+  	
+	<ul class="option-tools items-3">
+			<li><a href="#" class="normal-a">&nbsp;</a></li>
+			<li><a data-rel="back" class="normal-a">Mapa</a></li>
+			<li><a href="#doctor_list" class="normal-a  active">Lista</a></li>
+		</ul>
+		
+	<form class="ui-filterable">
+      <input id="doctorFilter" class="searchB" placeholder="Búsqueda por nombre" data-role="none">
+    </form>
+ <ul id="doctUl" data-role="listview" data-filter="true" data-input="#doctorFilter" data-autodividers="true" data-inset="true">
+  </ul>
+  	
+  </div>
+  <div  class="sfootp"  data-position="fixed">
+	
+  </div>
+  </div>
+  
+  <div data-role="page" id="doctor_show">
+
+  <div data-role="header" class="toph-p">
+    <h2 >&nbsp;</h2>
+    <a data-rel="back" data-role="none" class="rheader2 ui-btn-left"  >&lsaquo; Nueva Cita</a>
+  </div>
+
+  <div data-role="main" class="ui-content mapcont">
+  	
+	<div class="dshowp">
+		<div id="imgd">
+		</div>
+		<h1 id="sdname"></h1>
+		<hr />
+		<h2 id="spec"></h2>
+	</div>
+	<div class="loctime">
+	<div class="ui-grid-a">
+    <div class="ui-block-a loctimed ">
+    	<img width="30px" src="img/loc.png" />
+    	<p id="location"></p>
+    </div>
+    <div class="ui-block-b loctimed">
+    	<img  width="30px" src="img/clock.png" />
+    	<p id="lv"></p>
+    	<p id="sat"></p>
+    	<p id="dom"></p>
+    </div>
+   </div>
+   
+	</div>	
+	<div class="infow">
+	<h1 class="study">Estudios</h1>
+   
+   	<h3 class="study">Universidad</h3>
+   	<div class="pointu">
+   		<p>2016</p>
+   		<p>Anahuac</p>
+   	</div>
+   <br/>
+   <h3 class="study">Experiencia</h3>
+   	<div class="pointu">
+   		<p>2016</p>
+   		<p>Médico interno de cirujía ortopédica y traumatología. <strong>Centro Médico ABC</strong></p>
+   	</div>
+   	<div class="pointu">
+   		<p>2018</p>
+   		<p>Médico interno de cirujía ortopédica y traumatología. <strong>Centro Médico ABC</strong></p>
+   	</div>
+   	<br/>
+   	<a class="sched" href="#chooseD" data-transition="flip">Agendar</a>
+   	<br/>
+	</div>
+
+  	
+  </div>
+  <div  class="sfootp"  data-position="fixed">
+	
+  </div>
+  </div>
+  
+  <div data-role="page" id="chooseD">
+
+  <div data-role="header" class="toph-p">
+    <h2 >&nbsp;</h2>
+    <a data-rel="back" data-role="none" class="rheader2 ui-btn-left"  >&lsaquo; Nueva Cita</a>
+  </div>
+
+  <div data-role="main" class="ui-content mapcont">
+  	<div class="elm-cent">
+  	    <div class="doctori">
+  	    	<div id="a-imgd"></div>
+  	    	<div class="datos-d">
+  	    		<h3 id="a-sdname"></h3>
+  	    		<h5 id="a-spec"></h5>
+  	    		<h5 id="a-price"></h5>
+  	    	</div>
+  	    </div>
+  	 </div>
+  	 <hr class="dividerd" />
+  	 <br/>
+  	 <label class="infoe">Elige tu horario</label>
+  	 <div class="dtcontainer">
+	    <input type="text" class="chooseDT" data-role="none" id="default_datetimepicker"/>
+	    <img width="25px" src="img/cal.png" />
+	 </div>
+     <br/>
+     <hr class="dividerd" />
+  	 <br/>
+  	<div class="ui-grid-b">
+    <div class="ui-block-a ">
+    	<img  class="elm-cent" src="img/exam.png" />
+    	<p id="exams" class="upar">Exámenes de laboratorio</p>
+    </div>
+    <div class="ui-block-b ">
+    	<img  class="elm-cent" src="img/radio.png" />
+    	<p id="radiog" class="upar">Radiografía</p>
+    </div>
+    <div class="ui-block-c ">
+    	<img  class="elm-cent"  src="img/recetas.png" />
+    	<p id="receta" class="upar">Recetas</p>
+    </div>
+   </div>
+   <br/>
+   <a id="np" class="sched">Siguiente</a>
+   <br/>
+  </div>
+  <div  class="sfootp"  data-position="fixed">
+	
+  </div>
+  </div>
+  
+  <div data-role="page" id="payment">
+
+  <div data-role="header" class="toph-p">
+    <h2 >&nbsp;</h2>
+    <a data-rel="back" data-role="none" class="rheader2 ui-btn-left"  >&lsaquo; Nueva Cita</a>
+  </div>
+
+  <div data-role="main" class="ui-content mapcont">
+  	<br/>
+  	<div class="elm-cent">
+  	   <h1 class="bluet">Método de pago</h1>
+  	   <h3 class="grayt">Consulta:</h3>
+  	   <h3 id="p-price" class="grayt"></h3>
+  	 </div>
+  	 <hr class="dividerd" />
+  	 <form id="payForm" method="post">
+  	 <div class="ui-grid-a">
+  	 	 <div class="ui-block-a ">
+    	<div class="control-group">
+    <label data-role="none" class="control control-radio">
+        Pagar ahora
+            <input type="radio" data-role="none" value="t" name="mpay" checked="checked" />
+        <div class="control_indicator"></div>
+    </label>
+    
+</div>
+    </div>
+    <div class="ui-block-b ">
+
+    	<div class="control-group">
+
+    <label class="control control-radio">
+        Pagar después
+            <input type="radio" data-role="none" value="e" name="mpay" />
+        <div class="control_indicator"></div>
+    </label>
+    
+</div>
+
+    </div>
+  	 </div>
+  	  <hr class="dividerd" />
+  	 
+  	 	<div id="cPay">
+  	 		<h1 class="grayt">Datos de pago</h1>
+  	 		<img width="70px" src="img/visa.png" /><img width="70px" src="img/master.png" /><img width="70px" src="img/am.png" />
+  	 		<br/><br/>
+  	 		<input type="hidden" id="month"  data-conekta="card[exp_month]" />
+            <input type="hidden" id="year" data-conekta="card[exp_year]"/>
+            <input type="hidden" id="totsf" name="total"/>
+  	 		<input type="text" name="tarj" data-role="none" data-conekta="card[number]"  placeholder="Nombre tarjetahabiente" />
+  	 		<input type="text" id="card" name="tarjh" data-conekta="card[name]"  data-role="none" placeholder="No. de la tarjeta" />
+  	 		<input type="text" name="expdate" id="expdate"  data-role="none" placeholder="Fecha de vencimiento" />
+  	 		<input type="text" data-role="none" name="cvv" id="cvv" data-conekta="card[cvc]" placeholder="Código de seguridad" />
+  	 	</div>
+  	<button data-role="none" type="submit" class="schedb">Confirmar</button>
+  	 </form>
+  	 
+  	</div>
+  	 
+    
+  	
+
+  <div  class="sfootp"  data-position="fixed">
+	
+  </div>
+  </div>
+  
+  <!-- Sección de doctores calendario -->
+ <!-- <div data-role="page" id="calendar_d">
+
+  <div data-role="header" class="toph-d">
+    <h2 class="htitle" >&nbsp;</h2>
+    <a href="#inicio" data-role="none" class="rheader2 ui-btn-right" data-transition="slidedown" >Inicio</a>
+  </div>
+
+  <div data-role="main" class="ui-content logob">
+  	<div id="cald" class="cal2">
+  		<script type="text/template" id="calendar-doctor">
+            <div class="clndr-controls">
+                <div class="clndr-previous-button">&lsaquo;</div>
+                <div class="month"><%= intervalStart.format('MMMM YYYY')  %></div>
+                <div class="clndr-next-button">&rsaquo;</div>
+            </div>
+           <div class="clearfix">
+            <% _.each(months, function(cal) { %>
+                <div class="cal">
+                   
+                    <div class="clndr-grid">
+                        <div class="days-of-the-week">
+                        <% _.each(daysOfTheWeek, function(day) { %>
+                            <div class="header-day"><%= day %></div>
+                        <% }); %>
+                            <div class="days">
+                            <% _.each(cal.days, function(day) { %>
+                                <div class="<%= day.classes %>"><%= day.day %></div>
+                            <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+            </div>
+            
+        </script>
+  		
+  	</div>
+  </div>
+<div  class="sfootd"  data-position="fixed">
+	
+</div>
+  </div>-->
+  <!-- david -->
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/sweetalert.min.js"></script>
+    <script src="js/conekta.js"></script>
+    <script src="js/underscore-min.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/es.js"></script>
+    <script src="js/clndr.js"></script>
+    <script src="js/jquery.datetimepicker.full.min.js"></script>
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js"></script>
+    <script type="text/javascript" src="js/gmaps.js"></script>
+    <script src="js/jquery.inputmask.js"></script>
+    <script src="js/jquery.inputmask.date.extensions.js"></script>
+    <script type="text/javascript" src="js/maps.js"></script>
+    <script type="text/javascript" src="js/operations.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+    </script>
+</body>
+
+</html>
