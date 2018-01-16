@@ -97,7 +97,7 @@ function checkC(){
     form.append("doct",1);
     form.append("patient",localStorage.getItem("user"));
     $.ajax({
-	url: "http://www.icone-solutions.com/conekta.php",
+	url: "http://www.icone-solutions.com/doct/conekta.php",
 	type: "POST",
 	data: form,
 	contentType: false,
@@ -109,6 +109,46 @@ function checkC(){
 	    if(data.toString()=="1"){
 	    	
 	    	$(rform)[0].reset();
+            swal("Listo","Tu cita fue registrada exitosamente.","success");
+	    	$.mobile.navigate( "#calendar_p", { transition : "slide",info: "info about the #foo hash" });
+
+
+	    }else{
+	    	var mes="";
+	    	
+	    		mes="Ocurrio un error al hacer tu cita, por favor inténtalo de nuevo";
+	    	
+           swal("Error",mes,"error");
+	    }
+	   
+	},
+
+	error: function(){
+		swal("Error","Actualmente tu dispositivo no cuenta con una conexión a internet","error");
+	}
+
+        });
+    }
+    function paynt(){
+    var form = new FormData($("#payForm")[0]);
+    var horario= $("#default_datetimepicker").val().toString().split(" ");
+    form.append("fecha",horario[0]);
+    form.append("hora",horario[1]);
+    form.append("doct",1);
+    form.append("patient",localStorage.getItem("usi"));
+    $.ajax({
+	url: "http://www.icone-solutions.com/doct/sqlOP.php",
+	type: "POST",
+	data: form,
+	contentType: false,
+	cache: false,
+	processData:false,
+	success: function(data){
+		
+		
+	    if(data.toString()=="1"){
+	    	var newEv = [{date: horario[0],title:"Single Day Event"}];
+	    	calendar.addEvents(newEv);
             swal("Listo","Tu cita fue registrada exitosamente.","success");
 	    	$.mobile.navigate( "#calendar_p", { transition : "slide",info: "info about the #foo hash" });
 
@@ -215,12 +255,38 @@ function checkC(){
           }  
         },
       error: function(){
+      	 $.mobile.loading( "hide");
         swal("Error","Actualmente tu dispositivo no cuenta con una conexión a internet","error");
       }
     });
     }
 
+function register(){
+    	var form = new FormData($("#regForm")[0]);
+    	$.ajax({
+	url: "http://www.icone-solutions.com/doct/sqlOP.php",
+	type: "POST",
+	data: form,
+	contentType: false,
+	cache: false,
+	processData:false,
+	success: function(data){
+		 console.log(data)
+	    if(data.toString()=="0"){
+	    	var datos = data.toString().split(",");
+	    	
+            swal("Listo","Tu usuario ha sido registrado exitosamente.","success");
+	    	$.mobile.navigate( "#inicio", { transition : "slide",info: "info about the #foo hash" });
 
+
+	    }else{
+           swal("Error",data.toString(),"error");
+	    }
+	    $("#rega").prop("disabled",false);
+	    }
+
+        });
+    }
 
 $(document).ready(function(){
 	
@@ -291,7 +357,7 @@ $(document).ready(function(){
         $("#year").val(year);       
  	         checkC();
  	        }else{
- 	        	pay();
+ 	        	paynt();
  	        }
             }
          });
@@ -305,36 +371,7 @@ $(document).ready(function(){
         readURL(this);
     });
     
-   $("#regFormP").submit(function(e){
-    	e.preventDefault();
-	
-	    swal({
-          title: "¿Estás seguro que tus datos son correctos?",
-          text: "",
-          type: "info",
-          showCancelButton: true,
-          confirmButtonColor: "#DD6B55",
-          confirmButtonText: "Aceptar",
-          showLoaderOnConfirm: true,
-          closeOnConfirm: false,
-          cancelButtonText: "Cancelar",
-        },
-        function(isConfirm){
-	        if(isConfirm){
-	        	if($('#mpay').val()=="t") {
-	        		var exd = $("#expdate").val().split("/");
-                var month =  exd[0];
-                var year =  exd[1];
-                $("#month").val(month);
-               $("#year").val(year);       
- 	           checkC();
-	        		} else{
-	        			pay();
-	        		}
-	        	
-            }
-         });
-   });
+   
    $("#regForm").submit(function(e){
     	e.preventDefault();
 	

@@ -253,6 +253,7 @@ h3.study{
 .sched{
 	text-decoration:none;
 	cursor:pointer;
+	border:none !important;
 	display:table;
 	margin:auto;
 	background: #00a6ff !important;

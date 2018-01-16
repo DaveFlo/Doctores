@@ -65,12 +65,12 @@
             <br />
             <input type="password" class="inputg" placeholder="Contraseña" data-clear-btn="true" name="pass"  value="">
             <br />
-            <center><input  type="submit" class="gbutton" data-role="none" value="Entrar"></center>
+            <center><input  type="submit" class="gbutton sched" data-role="none" value="Entrar"></center>
           </form>
         </div>
       </div>
       <div data-role="footer" class="sfoot" data-id="foo1" data-position="fixed">
-        <a href="#registro" class="regt" data-role="none" data-transition="flip">Registrarse</a>
+        <a href="#registro" class="regt " data-role="none" data-transition="flip">Registrarse</a>
       </div>
     </div>
   </div>
@@ -80,14 +80,20 @@
       <h2 class="regt">REGISTRO</h2>
       <center><img src="img/1.png" width="100" height="50"></center>
       <div class="ui-content shadowu">
-        <form id="registro" data-ajax="true">
-        <input type="text" class="inputg" placeholder="Nombre" data-clear-btn="true" name="user" id="nombre" value="">
+        <form id="regForm" >
+        <input type="text" class="inputg" placeholder="Nombre" data-clear-btn="true" name="userR" id="nombre" value="">
         <br />
-        <input type="text" class="inputg" placeholder="Correo" data-clear-btn="true" name="user" id="mail" value="">
+        <input type="text" class="inputg" placeholder="Correo" data-clear-btn="true" name="mailR" id="mail" value="">
         <br />
-        <input type="password" class="inputg" placeholder="Contraseña" data-clear-btn="true" name="pass"  value="">
-        <input type="text" class="inputg" placeholder="Repetir contraseña" data-clear-btn="true" name="user" id="pass" value="">
-        <center><input  type="submit" class="gbutton"  data-role="none" value="Entrar"></center>
+        <select name="sexo">
+        	<option value="H">H</option>
+        	<option value="M">M</option>
+        </select>
+        <br />
+        <input type="password" class="inputg" placeholder="Contraseña" data-clear-btn="true" name="passR"  value="">
+        <br />
+        
+        <center><input  type="submit" class="gbutton sched"  data-role="none" value="Aceptar"></center>
       </form>
     </div>
   </div>
@@ -121,7 +127,7 @@
             <label class="hola">Pagos</label>  
           </td>
           <td >
-            <center><a href="#"><img src="img/conf.png" width="60" height="60"></a></center>
+            <center><a href="#conf"  data-transition="fade"><img src="img/conf.png" width="60" height="60"></a></center>
             <label class="hola">Configuración</label>  
           </td>
         </tr>
@@ -148,7 +154,21 @@
     </div>
   </div>
 </div>
-
+<div data-role="page" id="conf">
+    <div style="margin-top: 2cm">
+      <h2 class="regt">Configuración</h2>
+      <center><img src="img/1.png" width="100" height="50"></center>
+      <div class="ui-content shadowu">
+        
+       
+        <center><input  type="button" class="gbutton close sched"  data-role="none" value="Cerrar Sesión"></center>
+      
+    </div>
+  </div>
+  <div data-role="footer" class="sfoot" data-id="foo1" data-position="fixed">
+    <a href="#registro" class="regt" data-role="none" data-transition="flip">Términos y condiciones</a>
+  </div>
+</div>
 
   <!-- Seccción de luis -->
   <!-- david -->
