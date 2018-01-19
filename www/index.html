@@ -63,6 +63,12 @@
           <form id="loginForm" >
             <input type="text" class="inputg" placeholder="Correo" data-clear-btn="true" name="user"  value="">
             <br />
+            <select name="tipo">
+            	<option value="pac">Paciente</option>
+        	<option value="doc">Doctor</option>
+        	
+            </select>
+            <br />
             <input type="password" class="inputg" placeholder="Contraseña" data-clear-btn="true" name="pass"  value="">
             <br />
             <center><input  type="submit" class="gbutton sched" data-role="none" value="Entrar"></center>
@@ -83,11 +89,11 @@
         <form id="regForm" >
         <input type="text" class="inputg" placeholder="Nombre" data-clear-btn="true" name="userR" id="nombre" value="">
         <br />
-        <input type="text" class="inputg" placeholder="Correo" data-clear-btn="true" name="mailR" id="mail" value="">
+        <input type="text" class="inputg" placeholder="Correo" data-clear-btn="true" name="mailR" id="mailR" value="">
         <br />
         <select name="sexo">
-        	<option value="H">H</option>
-        	<option value="M">M</option>
+        	<option value="H">Hombre</option>
+        	<option value="M">Mujer</option>
         </select>
         <br />
         <input type="password" class="inputg" placeholder="Contraseña" data-clear-btn="true" name="passR"  value="">
@@ -118,7 +124,7 @@
             <label class="hola">Perfil</label>
           </td>
           <td >
-            <center><a href="#calendar_p"  data-transition="slideup"><img src="img/citas.png" width="60" height="60"></a></center>
+            <center><a href="#important_d"  data-transition="slideup"><img src="img/citas.png" width="60" height="60"></a></center>
             <label class="hola">Citas</label>  
           </td>
         </tr>
@@ -173,6 +179,33 @@
 
   <!-- Seccción de luis -->
   <!-- david -->
+  <div data-role="page" id="important_d">
+
+  <div data-role="header" class="toph-p">
+    <h2 >&nbsp;</h2>
+    <a href="#menu" data-role="none" class="rheader2 ui-btn-left" data-transition="slidedown" >&lsaquo; Citas</a>
+  </div>
+
+  <div data-role="main" class="ui-content calcont">
+  	
+	
+		<ul class="option-tools">
+			<li><a href="#important_d" data-transition="slide" class="normal-a active">Importante</a></li>
+			<li><a href="#calendar_p" data-transition="slide" class="normal-a ">Calendario</a></li>
+			<li><a href="#" class="normal-a">Configuración</a></li>
+			<li><a href="#map_search"  data-transition="slide" class="plus-s">+</a></li>
+		</ul>
+	
+   <ul id="citasUL" data-role="listview"   data-inset="true">
+   	 
+  </ul>
+  	
+  <div  class="sfootp"  data-position="fixed">
+	
+  </div>
+  </div>
+  </div>
+  
   <div data-role="page" id="calendar_p">
 
   <div data-role="header" class="toph-p">
@@ -184,8 +217,8 @@
   	
 	
 		<ul class="option-tools">
-			<li><a href="#" class="normal-a">Importante</a></li>
-			<li><a href="#" class="normal-a active">Calendario</a></li>
+			<li><a href="#important_d" data-transition="slide" class="normal-a">Importante</a></li>
+			<li><a href="#calendar_p" data-transition="slide"  class="normal-a active">Calendario</a></li>
 			<li><a href="#" class="normal-a">Configuración</a></li>
 			<li><a href="#map_search"  data-transition="slide" class="plus-s">+</a></li>
 		</ul>
@@ -222,11 +255,19 @@
   		
   	</div>
   	<hr class="dividerd" />
-  	<div class="appointments">
-  		<table>
-  			
-  		</table>
-  	</div>
+  	
+  		<div class="appointments">
+  			<table id="schedule">
+  				<tbody>
+  				<tr>
+  					<td class="hcita">No hay citas</td>
+  					<td class="dcita"><div>--</div></td>
+  				</tr>
+  				
+  				</tbody>
+  			</table>
+  		</div>
+  	
   </div>
   <div  class="sfootp"  data-position="fixed">
 	
@@ -456,11 +497,12 @@
   	 		<h1 class="grayt">Datos de pago</h1>
   	 		<img width="70px" src="img/visa.png" /><img width="70px" src="img/master.png" /><img width="70px" src="img/am.png" />
   	 		<br/><br/>
+  	 		<input type="hidden" id="doctP"  name="doct" />
   	 		<input type="hidden" id="month"  data-conekta="card[exp_month]" />
             <input type="hidden" id="year" data-conekta="card[exp_year]"/>
             <input type="hidden" id="totsf" name="total"/>
-  	 		<input type="text" name="tarj" data-role="none" data-conekta="card[number]"  placeholder="Nombre tarjetahabiente" />
-  	 		<input type="text" id="card" name="tarjh" data-conekta="card[name]"  data-role="none" placeholder="No. de la tarjeta" />
+  	 		<input type="text" name="tarj" data-role="none" data-conekta="card[name]"  placeholder="Nombre tarjetahabiente" />
+  	 		<input type="text" id="card" name="tarjh" data-conekta="card[number]"  data-role="none" placeholder="No. de la tarjeta" />
   	 		<input type="text" name="expdate" id="expdate"  data-role="none" placeholder="Fecha de vencimiento" />
   	 		<input type="text" data-role="none" name="cvv" id="cvv" data-conekta="card[cvc]" placeholder="Código de seguridad" />
   	 	</div>

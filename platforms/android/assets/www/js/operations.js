@@ -6,7 +6,7 @@ if(localStorage.getItem("user")!=null){
   
 
 
-Conekta.setPublicKey('key_L7Psm9dyS6CdPoozJGB6fdQ');
+Conekta.setPublicKey('key_BpifLpJUQoudFUeD45P8HCw');
 Conekta.setLanguage("es"); 
 function checkC(){
 	var $form = $("#payForm");
@@ -17,7 +17,7 @@ function checkC(){
 }
  var conektaSuccessResponseHandler = function(token) {
   	
-    var $form = $("#regForm");
+    var $form = $("#payForm");
     //Inserta el token_id en la forma para que se envíe al servidor
     $form.append($("<input type='hidden' name='conektaTokenId' id='conektaTokenId'>").val(token.id));
     pay("#regFormP");
@@ -45,11 +45,38 @@ function checkC(){
 	data: {gd:gd},
 	async: false,
 	success: function(data){
+		console.log(data);
 		var obj= jQuery.parseJSON(data);
 		for(var i=0;i< obj.length;i++){
-			var temp = {date: obj[i],
+			var temp = {date: obj[i][0],
             title: 'Single Day Event'}
 			datesArray.push(temp);
+			var color ="";
+			var color2 ="";
+			if(obj[i][6]=="Liberado"){
+				color = "blueb";
+				color2 = "greenp";
+			}else{
+				color="orangeb";
+				color2 = "orangep"
+			}
+			$("#citasUL").append(' <li class="'+color+'">'+
+   	 	'<div class="flexb">'+
+   	 		'<div class="idate"><div style="background-image: url('+obj[i][4]+'");" class="doci"></div><div class="info_d">'+
+   	 			'<h1>Dr(a). '+obj[i][2]+' <hr></h1>'+
+   	 			'<p>'+obj[i][5]+'</p>'+
+   	 			'<p>'+obj[i][1]+'</p>'+
+   	 			'<p class="'+color2+'">$'+obj[i][3]+' '+obj[i][6]+'</p>'+
+   	 			'</div></div>'+
+   	 	'</div>'+
+   	 	
+   	 	'</li>')
+		
+		
+			
+		}
+		if ($("#citasUL").hasClass('ui-listview')) {
+			$("#citasUL").listview('refresh');
 		}
 		 calendar= $('#calp').clndr({
         lengthOfTime: {
@@ -65,16 +92,51 @@ function checkC(){
         template: $('#calendar-patient').html(),
         clickEvents: {
             click: function (target) {
-                console.log(datesArray);
+                var fc = target.date._i;
+                var patient= localStorage.getItem("usi");
+                 html = $(this).jqmData( "html" ) || "";
+      $.mobile.loading( "show", {
+            text: "Cargando...",
+            textVisible: true,
+            theme: "b",
+            textonly: false,
+            html: html
+    });
+                $.ajax({
+                	url: "http://www.icone-solutions.com/doct/sqlOP.php",
+	                type: "POST",
+	                data: {fechac: fc,patient:patient},
+	              success: function(data){
+	              	$.mobile.loading("hide");
+	              	var obj = jQuery.parseJSON(data);
+	              	$("#schedule").empty();
+	              	if(obj.length==0){
+	              		var mess = "<tbody><tr><td class='hcita'>No hay citas</td><td class='dcita'> -- </td></tr></tbody>"
+	              		$("#schedule").append(mess);
+	              	}else{
+	              		var mess = "<tbody>";
+	              		for(var i=0;i<obj.length;i++){
+	              		  mess += "<tr><td class='hcita'>"+obj[i][1].substring(0, 5)+"</td><td class='dcita'><div> Dr(a). "+obj[i][0]+" </div></td></tr>"
+	              	    }
+	              	     mess += "</tbody>";
+	              	    $("#schedule").append(mess);
+	              	}
+	              	
+	              },
+	              error: function(data){
+	              	$.mobile.loading("hide");
+	              	swal("Error","Revisa tu conexión e intentalo de nuevo","error");
+	              }
+                });
             },
             nextInterval: function () {
-                console.log('Cal-3 next interval');
+                //console.log('Cal-3 next interval');
             },
             previousInterval: function () {
-                console.log('Cal-3 previous interval');
+                //console.log('Cal-3 previous interval');
             },
             onIntervalChange: function () {
-                console.log('Cal-3 interval changed');
+                //console.log('Cal-3 interval changed');
             }
         },
         
@@ -94,8 +156,7 @@ function checkC(){
     var horario= $("#default_datetimepicker").val().toString().split(" ");
     form.append("fecha",horario[0]);
     form.append("hora",horario[1]);
-    form.append("doct",1);
-    form.append("patient",localStorage.getItem("user"));
+    form.append("patient",localStorage.getItem("usi"));
     $.ajax({
 	url: "http://www.icone-solutions.com/doct/conekta.php",
 	type: "POST",
@@ -104,11 +165,13 @@ function checkC(){
 	cache: false,
 	processData:false,
 	success: function(data){
-		
-		
+		$("#payForm").find("button").prop("disabled", false);
+		console.log(data);
 	    if(data.toString()=="1"){
 	    	
-	    	$(rform)[0].reset();
+	    	
+            var newEv = [{date: horario[0],title:"Single Day Event"}];
+	    	calendar.addEvents(newEv);
             swal("Listo","Tu cita fue registrada exitosamente.","success");
 	    	$.mobile.navigate( "#calendar_p", { transition : "slide",info: "info about the #foo hash" });
 
@@ -134,7 +197,6 @@ function checkC(){
     var horario= $("#default_datetimepicker").val().toString().split(" ");
     form.append("fecha",horario[0]);
     form.append("hora",horario[1]);
-    form.append("doct",1);
     form.append("patient",localStorage.getItem("usi"));
     $.ajax({
 	url: "http://www.icone-solutions.com/doct/sqlOP.php",
@@ -272,11 +334,13 @@ function register(){
 	processData:false,
 	success: function(data){
 		 console.log(data)
-	    if(data.toString()=="0"){
+	    if(data.toString().length==1){
 	    	var datos = data.toString().split(",");
 	    	
             swal("Listo","Tu usuario ha sido registrado exitosamente.","success");
-	    	$.mobile.navigate( "#inicio", { transition : "slide",info: "info about the #foo hash" });
+            localStorage.setItem("user",$("#mailR").val());
+            localStorage.setItem("usi",data.toString());
+            $.mobile.navigate( "#menu", { transition : "slide",info: "info about the #foo hash" });
 
 
 	    }else{
@@ -349,16 +413,16 @@ $(document).ready(function(){
         },
         function(isConfirm){
 	        if(isConfirm){
-	        	if($('#mpay').val()=="t") {
+	        	if($('#cPay').is(":visible")) {
 	        	var exd = $("#expdate").val().split("/");
                 var month =  exd[0];
                 var year =  exd[1];
-               $("#month").val(month);
-        $("#year").val(year);       
- 	         checkC();
- 	        }else{
+                $("#month").val(month);
+                $("#year").val(year);       
+ 	            checkC();
+ 	           }else{
  	        	paynt();
- 	        }
+ 	           }
             }
          });
          });
@@ -483,36 +547,7 @@ var thisMonth = moment().format('YYYY-MM');
 getSchedule();
 
    
-    
-   /* $('#cald').clndr({
-        lengthOfTime: {
-            months: 1,
-            interval: 1
-        },
-        events: eventArray,
-        multiDayEvents: {
-        	singleDay: 'date',
-            endDate: 'endDate',
-            startDate: 'startDate'
-        },
-        template: $('#calendar-doctor').html(),
-        clickEvents: {
-            click: function (target) {
-                console.log('Cal-3 clicked: ', target);
-            },
-            nextInterval: function () {
-                console.log('Cal-3 next interval');
-            },
-            previousInterval: function () {
-                console.log('Cal-3 previous interval');
-            },
-            onIntervalChange: function () {
-                console.log('Cal-3 interval changed');
-            }
-        },
-        
-        moment:moment
-    });*/
+
    var saturday;
    var weekend;
    var sunday;
@@ -535,6 +570,7 @@ getSchedule();
 	success: function(data){
 		
 		var docts = jQuery.parseJSON(data);
+		$("#doctP").val(docts[0][0]);
 		$("#imgd").css("background-image", "url('http://www.icone-solutions.com/doct/images/"+docts[0][4]+"')");
 		$("#a-imgd").css("background-image", "url('http://www.icone-solutions.com/doct/images/"+docts[0][4]+"')");
 		$("#sdname").text(docts[0][1]);
