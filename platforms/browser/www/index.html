@@ -57,15 +57,15 @@
       <h1 class="regt">BIENVENIDO</h1>
       <div data-role="main" class="ui-content logob">
         <div class="logob">
-          <center><img src="img/1.png" width="100" height="50"></center>
+          <center><img src="img/logo.jpg" width="150"></center>
         </div>
         <div class="ui-content shadowu">
           <form id="loginForm" >
             <input type="text" class="inputg" placeholder="Correo" data-clear-btn="true" name="user"  value="">
             <br />
-            <select name="tipo">
+            <select id="tipoL" name="tipo">
             	<option value="pac">Paciente</option>
-        	<option value="doc">Doctor</option>
+        	     <option value="doc">Doctor</option>
         	
             </select>
             <br />
@@ -84,7 +84,7 @@
   <div data-role="page" id="registro">
     <div style="margin-top: 2cm">
       <h2 class="regt">REGISTRO</h2>
-      <center><img src="img/1.png" width="100" height="50"></center>
+      <center><img src="img/logo.jpg" width="150" ></center>
       <div class="ui-content shadowu">
         <form id="regForm" >
         <input type="text" class="inputg" placeholder="Nombre" data-clear-btn="true" name="userR" id="nombre" value="">
@@ -96,9 +96,9 @@
         	<option value="M">Mujer</option>
         </select>
         <br />
-        <input type="password" class="inputg" placeholder="Contraseña" data-clear-btn="true" name="passR"  value="">
+        <input type="password" class="inputg" placeholder="Contraseña" data-clear-btn="true" name="passR" id="pass1"  value="">
         <br />
-        <input type="password" class="inputg" placeholder="Confirma tu contraseña" data-clear-btn="true" name="passR2"  value="">
+        <input type="password" class="inputg" placeholder="Confirma tu contraseña" data-clear-btn="true" name="passR2" id="pass2"  value="">
         <br />
         <center><input  type="submit" class="gbutton sched"  data-role="none" value="Aceptar"></center>
       </form>
@@ -113,14 +113,14 @@
   <div style="margin-top: 2cm">
     <div data-role="main" class="ui-content logob">
       <div class="logob">
-        <center><img src="img/1.png" width="100" height="50"></center>
+        <center><img src="img/logo.jpg" width="200" ></center>
       </div>
       <br>
       <br>
       <table class="menu" align="center">
         <tr>
           <td >
-            <center><a href="#"><img src="img/3.png" width="60" height="60"></a></center>
+            <center><a href="#profileP"><img src="img/3.png" width="60" height="60"></a></center>
             <label class="hola">Perfil</label>
           </td>
           <td >
@@ -139,32 +139,170 @@
           </td>
         </tr>
       </table>
-      <!--
-      <div class="ui-grid-e">
-        <div class="ui-block-a">
-          <center><img src="img/3.png" width="60" height="60"></center>
-          <label class="hola">Perfil</label>
-        </div>
-        <div class="ui-block-b">
-          <center><img src="img/4.png" width="60" height="60"></center>
-          <label class="hola">Pacientes</label>
-        </div>
-        <div class="ui-block-a">
-          <center><img src="img/6.png" width="60" height="60"></center>
-          <label class="hola">Agenda</label>
-        </div>
-        <div class="ui-block-b">
-          <center><img src="img/7.png" width="60" height="60"></center>
-          <label class="hola">Configuración</label>
-        </div>
-      </div>-->
+    
     </div>
   </div>
+</div>
+
+<div data-role="page" id="menuD">
+  <div style="margin-top: 2cm">
+    <div data-role="main" class="ui-content logob">
+      <div class="logob">
+        <center><img src="img/logo.jpg" width="200" ></center>
+      </div>
+      <br>
+      <br>
+      <table class="menu" align="center">
+        <tr>
+          <td >
+            <center><a href="#profileD"><img src="img/3.png" width="60" height="60"></a></center>
+            <label class="hola">Perfil</label>
+          </td>
+          <td >
+            <center><a href="#patient_list"  data-transition="slideup"><img src="img/pacientes.png" width="60" height="60"></a></center>
+            <label class="hola">Pacientes</label>  
+          </td>
+        </tr>
+        <tr>
+          <td >
+            <center><a href="#agenda"  data-transition="pop" ><img src="img/agenda.png" width="60" height="60"></a></center>
+            <label class="hola">Agenda</label>  
+          </td>
+          <td >
+            <center><a href="#conf"  data-transition="fade"><img src="img/conf.png" width="60" height="60"></a></center>
+            <label class="hola">Configuración</label>  
+          </td>
+        </tr>
+      </table>
+    
+    </div>
+  </div>
+</div>
+<div data-role="page" id="profileP">
+    <div data-role="header" class="toph-p">
+    <h2 >&nbsp;</h2>
+    <a href="#menu" data-role="none" class="rheader2 ui-btn-left" data-transition="slidedown" >&lsaquo; Perfil</a>
+  </div>
+
+  <div data-role="main" class="ui-content calcont">
+  	
+	
+		<ul class="option-tools items-3">
+			<li><a href="#profileP" data-transition="slide" class="normal-a active">Datos Personales</a></li>
+			<li><a href="#expediente" data-transition="slide" class="normal-a ">Expediente</a></li>
+			<li><a href="#recentA" class="normal-a">Citas Recientes</a></li>
+		</ul>
+	
+	
+        <form id="datosForm" >
+        	<div class="profileI">
+        		<img id="pacP" class="profileimg" src="img/logo.jpg" ></img>
+        		<a class="changeI" id="CIP"  data-role="button" data-icon="plus" data-iconpos="notext">Delete</a>
+        	</div>
+        <input data-role="none" type="file" name="fotoP" id="fotoP"/>
+        <input type="text" class="inputg" placeholder="Nombre" data-clear-btn="true" name="nombreU" id="nombreU" value="">
+        <br />
+        <input type="text" class="inputg" placeholder="Correo" data-clear-btn="true" name="mailU" id="mailU" value="">
+        <br />
+        <input type="text" class="inputg" placeholder="Teléfono" data-clear-btn="true" name="telU" id="telU" value="">
+        <br />
+        <select name="sexoU" id="sexoU">
+        	<option value="H">Hombre</option>
+        	<option value="M">Mujer</option>
+        </select>
+        <br />
+        <select name="ecU" id="ecU">
+        	<option value="Soltero">Soltero(a)</option>
+        	<option value="Comprometido">Comprometido(a)</option>
+        	<option value="Casado">Casado(a)</option>
+        	<option value="Divorciado">Divorciado(a)</option>
+        	<option value="Viudo">Viudo(a)</option>
+        </select>
+        <br />
+        <input type="text" class="inputg" placeholder="Edad" data-clear-btn="true" name="edadU" id="edadU" value="">
+        <br />
+        <center><input  type="submit" class="gbutton sched"  data-role="none" value="Guardar"></center>
+      </form>
+      
+  	
+  <div  class="sfootp"  data-position="fixed">
+	
+  </div>
+  </div>
+  
+</div>
+<div data-role="page" id="profileD">
+    <div data-role="header" class="toph-p">
+    <h2 >&nbsp;</h2>
+    <a href="#menu" data-role="none" class="rheader2 ui-btn-left" data-transition="slidedown" >&lsaquo; Perfil</a>
+  </div>
+
+  <div data-role="main" class="ui-content calcont">
+  	
+	
+		<ul class="option-tools items-3">
+			<li><a href="#profileD" data-transition="slide" class="normal-a active">Datos Personales</a></li>
+			<li><a href="#" data-transition="slide" class="normal-a ">Estudios</a></li>
+			<li><a href="#" class="normal-a">Consultorio</a></li>
+		</ul>
+	
+	
+        <form id="datosdForm" >
+        	<div class="profileI">
+        		<img id="docP" class="profileimg" src="img/logo.jpg" ></img>
+        		<a class="changeI" id="CID"  data-role="button" data-icon="plus" data-iconpos="notext">Delete</a>
+        	</div>
+        <input data-role="none" type="file" name="fotoD" id="fotoD"/>
+        <input type="text" class="inputg" placeholder="Nombre" data-clear-btn="true" name="nombreD" id="nombreD" value="">
+        <br />
+        <input type="text" class="inputg" placeholder="Correo" data-clear-btn="true" name="mailD" id="mailD" value="">
+        <br />
+        <input type="text" class="inputg" placeholder="Teléfono" data-clear-btn="true" name="telD" id="telD" value="">
+        <br />
+        
+        
+        
+        <center><input  type="submit" class="gbutton sched"  data-role="none" value="Guardar"></center>
+      </form>
+      
+  	
+  <div  class="sfootp"  data-position="fixed">
+	
+  </div>
+  </div>
+  
+</div>
+<div data-role="page" id="recentA">
+    <div data-role="header" class="toph-p">
+    <h2 >&nbsp;</h2>
+    <a href="#menu" data-role="none" class="rheader2 ui-btn-left" data-transition="slidedown" >&lsaquo; Perfil</a>
+  </div>
+
+  <div data-role="main" class="ui-content calcont">
+  	
+	
+		<ul class="option-tools items-3">
+			<li><a href="#profileP" data-transition="slide" class="normal-a ">Datos Personales</a></li>
+			<li><a href="#expediente" data-transition="slide" class="normal-a ">Expediente</a></li>
+			<li><a href="#recentA" class="normal-a active">Citas Recientes</a></li>
+		</ul>
+	
+	
+        <ul id="citasRUL" data-role="listview"   data-inset="true">
+   	 
+        </ul>
+      
+  	
+  <div  class="sfootp"  data-position="fixed">
+	
+  </div>
+  </div>
+  
 </div>
 <div data-role="page" id="conf">
     <div style="margin-top: 2cm">
       <h2 class="regt">Configuración</h2>
-      <center><img src="img/1.png" width="100" height="50"></center>
+      
       <div class="ui-content shadowu">
         
        
@@ -172,9 +310,7 @@
       
     </div>
   </div>
-  <div data-role="footer" class="sfoot" data-id="foo1" data-position="fixed">
-    <a href="#registro" class="regt" data-role="none" data-transition="flip">Términos y condiciones</a>
-  </div>
+  
 </div>
 
   <!-- Seccción de luis -->
@@ -274,6 +410,75 @@
   </div>
   </div>
   
+  <div data-role="page" id="agenda">
+
+  <div data-role="header" class="toph-p">
+    <h2 >&nbsp;</h2>
+    <a href="#menuD" data-role="none" class="rheader2 ui-btn-left" data-transition="slidedown" >&lsaquo; Agenda</a>
+  </div>
+
+  <div data-role="main" class="ui-content calcont">
+  	
+	
+		<ul class="option-tools items-3">
+			<li><a href="#important_d" data-transition="slide" class="normal-a active">Mes</a></li>
+			<li><a href="#" data-transition="slide"  class="normal-a ">Semana</a></li>
+			<li><a href="#" class="normal-a">Día</a></li>
+			<li><a href="#map_search"  data-transition="slide" class="plus-s">+</a></li>
+		</ul>
+	
+
+  	<div id="agendac" class="cal2">
+  		<script type="text/template" id="calendar-doc">
+            <div class="clndr-controls">
+                <div class="clndr-previous-button">&lsaquo;</div>
+                <div class="month"><%= intervalStart.format('MMMM YYYY')  %></div>
+                <div class="clndr-next-button">&rsaquo;</div>
+            </div>
+           <div class="clearfix">
+            <% _.each(months, function(cal) { %>
+                <div class="cal">
+                   
+                    <div class="clndr-grid">
+                        <div class="days-of-the-week">
+                        <% _.each(daysOfTheWeek, function(day) { %>
+                            <div class="header-day"><%= day %></div>
+                        <% }); %>
+                            <div class="days">
+                            <% _.each(cal.days, function(day) { %>
+                                <div class="<%= day.classes %>"><%= day.day %></div>
+                            <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+            </div>
+            
+        </script>
+  		
+  	</div>
+  	<hr class="dividerd" />
+  	
+  		<div class="appointments">
+  			<table id="scheduleD">
+  				<tbody>
+  				<tr>
+  					<td class="hcita">No hay citas</td>
+  					<td class="dcita"><div>--</div></td>
+  				</tr>
+  				
+  				</tbody>
+  			</table>
+  		</div>
+  	
+  </div>
+  <div  class="sfootp"  data-position="fixed">
+	
+  </div>
+  </div>
+  
+  
   <div data-role="page" id="map_search">
 
   <div data-role="header" class="toph-p">
@@ -310,7 +515,28 @@
 	
   </div>
   </div>
-  
+  <div data-role="page" id="patient_list">
+
+  <div data-role="header" class="toph-p">
+    <h2 >&nbsp;</h2>
+    <a data-rel="back" data-role="none" class="rheader2 ui-btn-left"  >&lsaquo; Pacientes</a>
+  </div>
+
+  <div data-role="main" class="ui-content mapcont">
+  	
+	
+		
+	<form class="ui-filterable">
+      <input id="pacFilter" class="searchB" placeholder="Búsqueda por nombre" data-role="none">
+    </form>
+ <ul id="pacUl" data-role="listview" data-filter="true" data-input="#pacFilter" data-autodividers="true" data-inset="true">
+  </ul>
+  	
+  </div>
+  <div  class="sfootp"  data-position="fixed">
+	
+  </div>
+  </div>
   <div data-role="page" id="doctor_list">
 
   <div data-role="header" class="toph-p">

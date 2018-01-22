@@ -1,7 +1,11 @@
 
 if(localStorage.getItem("user")!=null){
-	
-    	$.mobile.navigate( "#menu", {transition:"pop" });
+	if(localStorage.getItem("tipo")=="pac"){
+		$.mobile.navigate( "#menu", {transition:"pop" });
+	}else{
+		$.mobile.navigate( "#menuD", {transition:"pop" });
+	}
+    	
 }
   
 
@@ -37,6 +41,76 @@ function checkC(){
   };
     var datesArray= Array();
     var calendar="";
+    function getPac(){
+    	html = $("body").jqmData( "html" ) || "";
+      
+   	var idu = localStorage.getItem("usi");
+ 	$.ajax({
+	url: "http://www.icone-solutions.com/doct/sqlOP.php",
+	type: "POST",
+	data: {patients:idu},
+	success: function(data){
+		
+		 $("#pacUl").empty();
+		var docts = jQuery.parseJSON(data);
+		for(var i=0;i<docts.length;i++){
+			$("#pacUl").append(' <li><a class="showP" data-pac="'+docts[i][2]+'">'+
+    	'<img src="http://icone-solutions.com/doct/pacientes/'+docts[i][1]+'" />'+
+    	'<span class="dname">'+docts[i][0]+'</span>'+
+    	'</a>'+
+    	'</li>')
+		}
+		if ($("#pacUl").hasClass('ui-listview')) {
+			$("#pacUl").listview('refresh');
+		}
+		
+	},
+	error: function(data){
+	              
+	              	swal("Error","Revisa tu conexión e intentalo de nuevo","error");
+	              }
+	});
+
+    }
+    function getPD(){
+ 	var idu = localStorage.getItem("usi");
+ 	var datat =localStorage.getItem("tipo");
+
+ 	$.ajax({
+	url: "http://www.icone-solutions.com/doct/sqlOP.php",
+	type: "POST",
+	data: {idu:idu,datat:datat},
+	success: function(data){
+		
+		var obj = jQuery.parseJSON(data);
+		datosp =obj;
+		if(datat=="pac"){
+			$("#nombreU").val(obj[0][0]);
+			$("#mailU").val(obj[0][1]);
+			$("#telU").val(obj[0][2]);
+			$("#sexoU").val(obj[0][3]);
+			$("#ecU").val(obj[0][4]);
+			$("#edadU").val(obj[0][5]);
+			$("#pacP").attr("src","http://icone-solutions.com/doct/pacientes/"+obj[0][6]);
+			$('#sexoU').selectmenu('refresh', true);
+			$('#ecU').selectmenu('refresh', true);
+		}else{
+			$("#nombreD").val(obj[0][0]);
+			$("#mailD").val(obj[0][1]);
+			$("#telD").val(obj[0][2]);
+			
+			$("#docP").attr("src","http://icone-solutions.com/doct/doctores/"+obj[0][3]);
+		}
+		
+		
+	},
+	error: function(data){
+	              	$.mobile.loading("hide");
+	              	swal("Error","Revisa tu conexión e intentalo de nuevo","error");
+	              }
+	});
+ }
+
    function getSchedule(){
    	var gd = localStorage.getItem("usi");
    	$.ajax({
@@ -45,7 +119,7 @@ function checkC(){
 	data: {gd:gd},
 	async: false,
 	success: function(data){
-		console.log(data);
+		
 		var obj= jQuery.parseJSON(data);
 		for(var i=0;i< obj.length;i++){
 			var temp = {date: obj[i][0],
@@ -70,12 +144,23 @@ function checkC(){
    	 			'</div></div>'+
    	 	'</div>'+
    	 	
-   	 	'</li>')
+   	 	'</li>');
+   	 	$("#citasRUL").append(' <li >'+
+   	 	'<div class="flexb">'+
+   	 		'<div class="idate"><div style="background-image: url('+obj[i][4]+'");" class="doci"></div><div class="info_d">'+
+   	 			'<h1>Dr(a). '+obj[i][2]+' <hr></h1>'+
+   	 			'<p>'+obj[i][5]+'</p>'+
+   	 			'<p>'+obj[i][1]+'</p>'+
+   	 			'</div></div>'+
+   	 	'</div>'+
+   	 	
+   	 	'</li>');
 		
 		
 			
 		}
 		if ($("#citasUL").hasClass('ui-listview')) {
+			$("#citasRUL").listview('refresh');
 			$("#citasUL").listview('refresh');
 		}
 		 calendar= $('#calp').clndr({
@@ -142,6 +227,145 @@ function checkC(){
         
         moment:moment
     });
+	},
+
+	error: function(){
+		swal("Error","Actualmente tu dispositivo no cuenta con una conexión a internet","error");
+	}
+
+        });
+   }
+   
+   function getAgenda(){
+   	var gd = localStorage.getItem("usi");
+   	$.ajax({
+	url: "http://www.icone-solutions.com/doct/sqlOP.php",
+	type: "POST",
+	data: {gdo:gd},
+	async: false,
+	success: function(data){
+		
+		var obj= jQuery.parseJSON(data);
+		for(var i=0;i< obj.length;i++){
+			var temp = {date: obj[i][0],
+            title: 'Single Day Event'}
+			datesArray.push(temp);
+			
+			
+   	 
+		
+		
+			
+		}
+		
+		 calendar= $('#agendac').clndr({
+        lengthOfTime: {
+            months: 1,
+            interval: 1
+        },
+        events: datesArray,
+        multiDayEvents: {
+        	singleDay: 'date',
+            endDate: 'endDate',
+            startDate: 'startDate'
+        },
+        template: $('#calendar-doc').html(),
+        clickEvents: {
+            click: function (target) {
+                var fc = target.date._i;
+                var doc= localStorage.getItem("usi");
+                 html = $(this).jqmData( "html" ) || "";
+      $.mobile.loading( "show", {
+            text: "Cargando...",
+            textVisible: true,
+            theme: "b",
+            textonly: false,
+            html: html
+    });
+                $.ajax({
+                	url: "http://www.icone-solutions.com/doct/sqlOP.php",
+	                type: "POST",
+	                data: {fechacd: fc,doc:doc},
+	              success: function(data){
+	              	console.log(data);
+	              	$.mobile.loading("hide");
+	              	var obj = jQuery.parseJSON(data);
+	              	$("#scheduleD").empty();
+	              	if(obj.length==0){
+	              		var mess = "<tbody><tr><td class='hcita'>No hay citas</td><td class='dcita'> -- </td></tr></tbody>"
+	              		$("#scheduleD").append(mess);
+	              	}else{
+	              		var mess = "<tbody>";
+	              		for(var i=0;i<obj.length;i++){
+	              		  mess += "<tr><td class='hcita'>"+obj[i][1].substring(0, 5)+"</td><td class='dcita'><div>"+obj[i][0]+" </div></td></tr>"
+	              	    }
+	              	     mess += "</tbody>";
+	              	    $("#scheduleD").append(mess);
+	              	}
+	              	
+	              },
+	              error: function(data){
+	              	$.mobile.loading("hide");
+	              	swal("Error","Revisa tu conexión e intentalo de nuevo","error");
+	              }
+                });
+            },
+            nextInterval: function () {
+                //console.log('Cal-3 next interval');
+            },
+            previousInterval: function () {
+                //console.log('Cal-3 previous interval');
+            },
+            onIntervalChange: function () {
+                //console.log('Cal-3 interval changed');
+            }
+        },
+        
+        moment:moment
+    });
+	},
+
+	error: function(){
+		swal("Error","Actualmente tu dispositivo no cuenta con una conexión a internet","error");
+	}
+
+        });
+   }
+   
+   
+   function getScheduleP(){
+   	var gd = localStorage.getItem("usi");
+   	$.ajax({
+	url: "http://www.icone-solutions.com/doct/sqlOP.php",
+	type: "POST",
+	data: {gdp:gd},
+	async: false,
+	success: function(data){
+		console.log(data);
+		var obj= jQuery.parseJSON(data);
+		for(var i=0;i< obj.length;i++){
+			
+			
+			
+   	 	$("#citasRUL").append(' <li >'+
+   	 	'<div class="flexb">'+
+   	 		'<div class="idate"><div style="background-image: url('+obj[i][4]+'");" class="doci"></div><div class="info_d">'+
+   	 			'<h1>Dr(a). '+obj[i][2]+' <hr></h1>'+
+   	 			'<p>'+obj[i][5]+'</p>'+
+   	 			'<p>'+obj[i][1]+'</p>'+
+   	 			'</div></div>'+
+   	 	'</div>'+
+   	 	
+   	 	'</li>');
+		
+		
+			
+		}
+		if ($("#citasUL").hasClass('ui-listview')) {
+			$("#citasRUL").listview('refresh');
+			
+		}
+		 
 	},
 
 	error: function(){
@@ -232,29 +456,55 @@ function checkC(){
         });
     }
     function updateD(){
-    var form = new FormData($("#accForm")[0]);
-    form.append("userm",localStorage.getItem("user"));
-    	$.ajax({
-	url: "http://www.reciclajelibre.com/sqlOP.php",
+    var form = new FormData($("#datosForm")[0]);
+    form.append("userm",localStorage.getItem("usi"));
+    $.ajax({
+	url: "http://www.icone-solutions.com/doct/sqlOP.php",
 	type: "POST",
 	data: form,
 	contentType: false,
 	cache: false,
 	processData:false,
 	success: function(data){
-		
 	    if(data.toString()=="1"){
 	    	
-	    	$('#regForm')[0].reset();
+	    	
             swal("Listo","Tus datos han sido modificados.","success");
-            $("#edit").addClass("ui-icon-edit");
- 	 $("#edit").removeClass("ui-icon-delete");
- 	$('#accForm input,#accForm textarea').css("background-color","transparent");
- 	$('#accForm input,#accForm textarea').prop('readonly', true);
- 	$('#joba').selectmenu('disable');
-		$("#saveD").css("visibility","hidden");
-	    	$.mobile.navigate( "#land", { transition : "slideup",info: "info about the #foo hash" });
+           
 
+	    }else{
+	    	
+	    	
+	    	
+           swal("Error","No se han podido modificar tus datos, revisa tu conexión e intentalo de nuevo","error");
+	    }
+	   
+	},
+
+	error: function(){
+		swal("Error","Actualmente tu dispositivo no cuenta con una conexión a internet","error");
+	}
+
+        });
+    }
+    
+    function updateDD(){
+    var form = new FormData($("#datosdForm")[0]);
+    form.append("userm",localStorage.getItem("usi"));
+    $.ajax({
+	url: "http://www.icone-solutions.com/doct/sqlOP.php",
+	type: "POST",
+	data: form,
+	contentType: false,
+	cache: false,
+	processData:false,
+	success: function(data){
+		console.log(data);
+	    if(data.toString()=="1"){
+	    	
+	    	
+            swal("Listo","Tus datos han sido modificados.","success");
+           
 
 	    }else{
 	    	
@@ -277,7 +527,7 @@ function checkC(){
             var reader = new FileReader();
             
             reader.onload = function (e) {
-                $(input).prev().prev().attr('src', e.target.result);
+                $(input).prev().find(".profileimg").attr('src', e.target.result);
             }
             
             reader.readAsDataURL(input.files[0]);
@@ -311,7 +561,14 @@ function checkC(){
             //$(".usern").text(user);
             localStorage.setItem("user",user);
             localStorage.setItem("usi",usi);
-            $.mobile.navigate( "#menu", { transition : "slide",info: "info about the #foo hash" });
+            if($("#tipoL").val()=="pac"){
+            	localStorage.setItem("tipo","pac");
+            	$.mobile.navigate( "#menu", { transition : "slide",info: "info about the #foo hash" });
+            }else{
+            	localStorage.setItem("tipo","doc");
+            	$.mobile.navigate( "#menuD", { transition : "slide",info: "info about the #foo hash" });
+            }
+            
           } else{
             swal("Error","Usuario o contraseña incorrectos","error");
           }  
@@ -340,6 +597,7 @@ function register(){
             swal("Listo","Tu usuario ha sido registrado exitosamente.","success");
             localStorage.setItem("user",$("#mailR").val());
             localStorage.setItem("usi",data.toString());
+            localStorage.setItem("tipo","pac");
             $.mobile.navigate( "#menu", { transition : "slide",info: "info about the #foo hash" });
 
 
@@ -373,10 +631,40 @@ $(document).ready(function(){
           }
          }, false);
      
+      $( 'recentA' ).on( 'pageshow',function(event){
+      
+        
+         getScheduleP();
+      
+      });
      $( '#calendar_p' ).on( 'pageshow',function(event){
       
         
          getSchedule();
+      
+      });
+      $( '#agenda' ).on( 'pageshow',function(event){
+      
+        
+         getAgenda();
+      
+      });
+      $( '#profileP' ).on( 'pageshow',function(event){
+      
+        
+         getPD();
+      
+      });
+      $( '#profileD' ).on( 'pageshow',function(event){
+      
+        
+         getPD();
+      
+      });
+      $( '#patient_list' ).on( 'pagebeforeshow',function(event){
+      
+        
+        getPac();
       
       });
          
@@ -428,17 +716,28 @@ $(document).ready(function(){
          });
     
    
-    $(".imch").click(function(){
-       $(this).next().click();
+    $("#CIP").click(function(){
+       $("#fotoP").click();
     });
-    $(".pic").change(function(){
+    $("#CID").click(function(){
+       $("#fotoD").click();
+    });
+    $("#fotoP").change(function(){
         readURL(this);
     });
-    
+    $("#fotoD").change(function(){
+        readURL(this);
+    });
    
    $("#regForm").submit(function(e){
     	e.preventDefault();
-	
+    	 var empty = $(this).find("input").filter(function() {
+
+        return this.value === "";
+        
+    });
+    if(empty.length==0){
+	    if($("#pass1").val()==$("#pass2").val()){
 	    swal({
           title: "¿Estás seguro que tus datos son correctos?",
           text: "",
@@ -455,8 +754,14 @@ $(document).ready(function(){
  	         register("#regForm");
             }
          });
+        }else{
+        	swal("Error","Las contraseñas no coinciden","error");
+        }
+       }else{
+       	swal("Error","Debes completar todos los campos","error");
+       }
    });
-   $("#accForm").submit(function(e){
+   $("#datosForm").submit(function(e){
     	e.preventDefault();
 	
 	    swal({
@@ -477,7 +782,26 @@ $(document).ready(function(){
          });
    });
   
-   
+   $("#datosdForm").submit(function(e){
+    	e.preventDefault();
+	
+	    swal({
+          title: "¿Estás seguro que tus datos son correctos?",
+          text: "",
+          type: "info",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Aceptar",
+          showLoaderOnConfirm: true,
+          closeOnConfirm: false,
+          cancelButtonText: "Cancelar",
+        },
+        function(isConfirm){
+	        if(isConfirm){
+ 	         updateDD();
+            }
+         });
+   });
     
  
  var datosp= Array();
@@ -512,30 +836,7 @@ $(document).ready(function(){
  	
  });
  
- $(".account").click(function(){
- 	var idu = localStorage.getItem("user");
- 	$.ajax({
-	url: "http://www.reciclajelibre.com/sqlOP.php",
-	type: "POST",
-	data: {idu:idu},
-	success: function(data){
-		
-		var obj = jQuery.parseJSON(data);
-		datosp =obj;
-		$("#nombrea").val(obj[1]);
-		$("#passa").val(obj[20]);
-		$("#compa").val(obj[2]);
-		$("#addressa").val(obj[3]);
-		$("#statea").val(obj[4]);
-		$("#citya").val(obj[5]);
-		$("#paisa").val(obj[6]);
-		$("#telefonoa").val(obj[8]);
-		$("#cellpa").val(obj[9]);
-		$("#joba").val(obj[10]);
-		$('#joba').selectmenu('refresh', true);
-	}
-	});
- });
+ 
  
 
 $(".close").click(function(){

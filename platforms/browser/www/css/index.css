@@ -239,6 +239,9 @@ h3.study{
 .chooseDT:focus{
 	outline:0;
 }
+#fotoP,#fotoD{
+	display: none;
+}
 .schedb{
 	text-decoration:none;
 	cursor:pointer;
@@ -277,6 +280,27 @@ h3.study{
 .elm-cent{
 	display: table;
 	margin: auto;
+}
+#datosForm,#datosdForm{
+	padding: 10px;
+}
+.profileI{
+	position:relative;
+	display:table;
+	margin: auto;
+}
+.changeI{
+	position: absolute;
+	bottom: -5px;
+	right:0px;
+}
+.profileimg{
+	border-radius:50%;
+	border: 2px solid #00a6ff !important;
+	background-size:100%;
+	background-position:center;
+	height: 100px;
+	width:100px;
 }
 .doctori #a-imgd{
 	
@@ -348,6 +372,7 @@ outline:0;
 	    padding: 7px 0;
 	width: 25%;
 }
+
 .option-tools.items-3 li{
 	width: 33.33%;
 }
@@ -392,21 +417,21 @@ outline:0;
 	padding-left: 8px;
 	
 }
-#citasUL{
+#citasUL,#citasRUL{
 	margin:0 0;
 }
-#citasUL li{
+#citasUL li,#citasRUL li{
 	min-height: 90px;
 	border-radius: 0 !important;
 }
-#citasUL li .flexb  {
+#citasUL li .flexb,#citasRUL li .flexb  {
 	display: table;
 	margin: auto;
 }
-#citasUL li .flexb > .idate{
+#citasUL li .flexb > .idate,#citasRUL li .flexb > .idate{
 	display: flex;
 }
-#citasUL li .flexb > .idate > .doci {
+#citasUL li .flexb > .idate > .doci,#citasRUL li .flexb > .idate > .doci {
    
     border-radius: 50%;
     border: 2px solid #00a6ff !important;
