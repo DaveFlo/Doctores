@@ -115,8 +115,6 @@ function checkC(){
    	var gd = localStorage.getItem("usi");
    	$.ajax({
 	url: "http://www.icone-solutions.com/doct/sqlOP.php",
-	type: "POST",
-	data: {gd:gd},
 	async: false,
 	success: function(data){
 		
@@ -442,7 +440,7 @@ function checkC(){
 	    }else{
 	    	var mes="";
 	    	
-	    		mes="Ocurrio un error al hacer tu cita, por favor inténtalo de nuevo";
+	    	mes=data.toString();
 	    	
            swal("Error",mes,"error");
 	    }
