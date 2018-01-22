@@ -390,7 +390,7 @@ function checkC(){
 	processData:false,
 	success: function(data){
 		$("#payForm").find("button").prop("disabled", false);
-		console.log(data);
+		
 	    if(data.toString()=="1"){
 	    	
 	    	
@@ -403,7 +403,7 @@ function checkC(){
 	    }else{
 	    	var mes="";
 	    	
-	    		mes="Ocurrio un error al hacer tu cita, por favor inténtalo de nuevo";
+	    	mes=data.toString();
 	    	
            swal("Error",mes,"error");
 	    }
@@ -432,7 +432,7 @@ function checkC(){
 	success: function(data){
 		
 		
-	    if(data.toString()=="1"){
+	     if(data.toString()=="1"){
 	    	var newEv = [{date: horario[0],title:"Single Day Event"}];
 	    	calendar.addEvents(newEv);
             swal("Listo","Tu cita fue registrada exitosamente.","success");
@@ -442,7 +442,7 @@ function checkC(){
 	    }else{
 	    	var mes="";
 	    	
-	    		mes="Ocurrio un error al hacer tu cita, por favor inténtalo de nuevo";
+	    	mes=data.toString();
 	    	
            swal("Error",mes,"error");
 	    }
