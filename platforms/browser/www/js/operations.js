@@ -430,7 +430,7 @@ function checkC(){
 	cache: false,
 	processData:false,
 	success: function(data){
-		
+		console.log(data);
 		
 	     if(data.toString()=="1"){
 	    	var newEv = [{date: horario[0],title:"Single Day Event"}];
@@ -591,7 +591,7 @@ function register(){
 	processData:false,
 	success: function(data){
 		 console.log(data)
-	    if(data.toString().length==1){
+	    if(!isNaN(data)){
 	    	var datos = data.toString().split(",");
 	    	
             swal("Listo","Tu usuario ha sido registrado exitosamente.","success");
