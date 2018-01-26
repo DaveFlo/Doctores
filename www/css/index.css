@@ -284,6 +284,14 @@ h3.study{
 #datosForm,#datosdForm{
 	padding: 10px;
 }
+.ui-listview .ui-li-has-thumb>img:first-child, .ui-listview .ui-li-has-thumb>.ui-btn>img:first-child, .ui-listview .ui-li-has-thumb .ui-li-thumb{
+	min-width: 5em;
+	max-width: 5em;
+}
+textarea{
+	resize: none;
+	min-height: 150px;
+}
 .profileI{
 	position:relative;
 	display:table;

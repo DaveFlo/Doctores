@@ -853,6 +853,8 @@ getSchedule();
    var weekend;
    var sunday;
    var allowed;
+   var disabledt;
+   var todaytp;
    $("#doctUl, #map_canvas").on("click",".showD",function(e){
    	e.preventDefault();
    	var d = $(this).data("doct");
@@ -890,7 +892,26 @@ getSchedule();
 		saturday = docts[0][10];
 		sunday = docts[0][11];
 		allowed = docts[0][12];
-		
+		console.log(allowed);
+		var d = new Date();
+			 var dd = d.getDate();
+    var mm = d.getMonth()+1; //January is 0!
+    
+    var yyyy = d.getFullYear();
+    if(dd<10){
+        dd='0'+dd;
+    } 
+    if(mm<10){
+        mm='0'+mm;
+    } 
+    todaytp = yyyy+'-'+mm+'-'+dd;
+		if(allowed.length==0){
+			
+			disabledt = [todaytp];
+			
+		}else{
+			disabledt = [];
+		}
 		$.mobile.loading( "hide");
 		
 		$.mobile.navigate( "#doctor_show", {transition:"slidedown" });
@@ -962,8 +983,10 @@ getSchedule();
  	   formatDate:'Y-m-d',
  	   formatTime:'H:i',
  	   defaultTime: "9:00",
+ 	   disabledDates: disabledt,
  	   disabledWeekDays: disabled,
  	   allowTimes: allowed,
+ 	   minDate: todaytp,
  	   onSelectDate:function(ct,$i){
  	   	var d = new Date(ct);
  	   		html = $(this).jqmData( "html" ) || "";
@@ -980,9 +1003,12 @@ getSchedule();
 	        type: "POST",
 	        data: {sdate:now, cd: 1},
 	        success: function(data){
+	        	console.log(data);
 	        	$.mobile.loading("hide");
 	        	allowed= jQuery.parseJSON(data);
+	        	
 	        	$i.datetimepicker('setOptions', { allowTimes:allowed});
+	        	
 	        },
 	        error: function(){
 	        	swal("Error","No se ha podido conectar al servidor, revisa tu conexión","error");
