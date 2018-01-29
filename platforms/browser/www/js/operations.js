@@ -55,7 +55,7 @@ function checkC(){
 		var docts = jQuery.parseJSON(data);
 		for(var i=0;i<docts.length;i++){
 			$("#pacUl").append(' <li><a class="showP" data-pac="'+docts[i][2]+'">'+
-    	'<img src="http://icone-solutions.com/doct/pacientes/'+docts[i][1]+'" />'+
+    	'<img src="http://icone-solutions.com/doct/img/'+docts[i][1]+'" />'+
     	'<span class="dname">'+docts[i][0]+'</span>'+
     	'</a>'+
     	'</li>')
@@ -91,7 +91,7 @@ function checkC(){
 			$("#sexoU").val(obj[0][3]);
 			$("#ecU").val(obj[0][4]);
 			$("#edadU").val(obj[0][5]);
-			$("#pacP").attr("src","http://icone-solutions.com/doct/pacientes/"+obj[0][6]);
+			$("#pacP").attr("src","http://icone-solutions.com/doct/img/"+obj[0][6]);
 			$('#sexoU').selectmenu('refresh', true);
 			$('#ecU').selectmenu('refresh', true);
 		}else{
@@ -99,7 +99,7 @@ function checkC(){
 			$("#mailD").val(obj[0][1]);
 			$("#telD").val(obj[0][2]);
 			
-			$("#docP").attr("src","http://icone-solutions.com/doct/doctores/"+obj[0][3]);
+			$("#docP").attr("src","http://icone-solutions.com/doct/img/"+obj[0][3]);
 		}
 		
 		
@@ -145,24 +145,15 @@ function checkC(){
    	 	'</div>'+
    	 	
    	 	'</li>');
-   	 	$("#citasRUL").append(' <li >'+
-   	 	'<div class="flexb">'+
-   	 		'<div class="idate"><div style="background-image: url('+obj[i][4]+'");" class="doci"></div><div class="info_d">'+
-   	 			'<h1>Dr(a). '+obj[i][2]+' <hr></h1>'+
-   	 			'<p>'+obj[i][5]+'</p>'+
-   	 			'<p>'+obj[i][1]+'</p>'+
-   	 			'</div></div>'+
-   	 	'</div>'+
    	 	
-   	 	'</li>');
 		
 		
 			
 		}
 		if ($("#citasUL").hasClass('ui-listview')) {
-			$("#citasRUL").listview('refresh');
 			$("#citasUL").listview('refresh');
 		}
+		
 		 calendar= $('#calp').clndr({
         lengthOfTime: {
             months: 1,
@@ -332,6 +323,47 @@ function checkC(){
         });
    }
    
+   function paymentList(){
+   	var pl = localStorage.getItem("usi");
+   	$.ajax({
+	url: "http://www.icone-solutions.com/doct/sqlOP.php",
+	type: "POST",
+	data: {pl:pl},
+	async: false,
+	success: function(data){
+		
+		console.log(data);
+		var obj= jQuery.parseJSON(data);
+		for(var i=0;i< obj.length;i++){
+			
+   	 	$("#paymentL").append('<li class="greenB">'+
+   	 	'<div class="flexb">'+
+   	 		'<div class="idate"><div class="info_pay">'+
+   	 			'<p>Cita con Dr(a). '+obj[i][2]+' </p>'+
+   	 			'<p>'+obj[i][1]+' </p>'+
+   	 			'<p>Costo: '+obj[i][3]+'</p>'+
+   	 			'</div></div>'+
+   	 	'</div>'+
+   	 	
+   	 	'</li>');
+		
+		
+			
+		}
+		if ($("#paymentL").hasClass('ui-listview')) {
+			$("#paymentL").listview('refresh');
+			
+		}
+		 
+	},
+
+	error: function(){
+		swal("Error","Actualmente tu dispositivo no cuenta con una conexión a internet","error");
+	}
+
+        });
+   }
+   
    
    function getScheduleP(){
    	var gd = localStorage.getItem("usi");
@@ -343,6 +375,16 @@ function checkC(){
 	success: function(data){
 		console.log(data);
 		var obj= jQuery.parseJSON(data);
+		console.log(obj.length);
+		if(obj.length==0){
+			$("#citasRUL").append(' <li >'+
+   	 	'<div class="flexb">'+
+   	 		'<div class="idate"><div class="info_d">'+
+   	 			'<h1>Aún no hay citas <hr></h1>'+
+   	 	'</div>'+
+   	 	
+   	 	'</li>');
+		}
 		for(var i=0;i< obj.length;i++){
 			
 			
@@ -361,7 +403,7 @@ function checkC(){
 		
 			
 		}
-		if ($("#citasUL").hasClass('ui-listview')) {
+		if ($("#citasRUL").hasClass('ui-listview')) {
 			$("#citasRUL").listview('refresh');
 			
 		}
@@ -378,8 +420,15 @@ function checkC(){
     function pay(){
     var form = new FormData($("#payForm")[0]);
     var horario= $("#default_datetimepicker").val().toString().split(" ");
+   var inputr = document.getElementById("radiograf"),
+      inputre = document.getElementById("recetaf"),
+      inpute = document.getElementById("elab");
+    
     form.append("fecha",horario[0]);
     form.append("hora",horario[1]);
+    form.append("radio",inputr.files[0]);
+    form.append("recipe",inputre.files[0]);
+    form.append("elab",file = inpute.files[0]);
     form.append("patient",localStorage.getItem("usi"));
     $.ajax({
 	url: "http://www.icone-solutions.com/doct/conekta.php",
@@ -392,8 +441,10 @@ function checkC(){
 		$("#payForm").find("button").prop("disabled", false);
 		
 	    if(data.toString()=="1"){
-	    	
-	    	
+	    	$("#radiograf").val("");
+	    	$("#receta").val("");
+	    	$("#elab").val("");
+	    	$("#default_datetimepicker").val("");
             var newEv = [{date: horario[0],title:"Single Day Event"}];
 	    	calendar.addEvents(newEv);
             swal("Listo","Tu cita fue registrada exitosamente.","success");
@@ -419,8 +470,15 @@ function checkC(){
     function paynt(){
     var form = new FormData($("#payForm")[0]);
     var horario= $("#default_datetimepicker").val().toString().split(" ");
+     var inputr = document.getElementById("radiograf"),
+      inputre = document.getElementById("recetaf"),
+      inpute = document.getElementById("elab");
+    
     form.append("fecha",horario[0]);
     form.append("hora",horario[1]);
+    form.append("radio",inputr.files[0]);
+    form.append("recipe",inputre.files[0]);
+    form.append("elab",file = inpute.files[0]);
     form.append("patient",localStorage.getItem("usi"));
     $.ajax({
 	url: "http://www.icone-solutions.com/doct/sqlOP.php",
@@ -430,9 +488,11 @@ function checkC(){
 	cache: false,
 	processData:false,
 	success: function(data){
-		console.log(data);
-		
 	     if(data.toString()=="1"){
+	     	$("#radiograf").val("");
+	    	$("#receta").val("");
+	    	$("#elab").val("");
+	     	$("#default_datetimepicker").val("");
 	    	var newEv = [{date: horario[0],title:"Single Day Event"}];
 	    	calendar.addEvents(newEv);
             swal("Listo","Tu cita fue registrada exitosamente.","success");
@@ -440,6 +500,7 @@ function checkC(){
 
 
 	    }else{
+	    	
 	    	var mes="";
 	    	
 	    	mes=data.toString();
@@ -631,7 +692,7 @@ $(document).ready(function(){
           }
          }, false);
      
-      $( 'recentA' ).on( 'pageshow',function(event){
+      $( '#recentA' ).on( 'pageshow',function(event){
       
         
          getScheduleP();
@@ -667,7 +728,7 @@ $(document).ready(function(){
         getPac();
       
       });
-         
+         paymentList();
          $('#loginForm').submit(function(e){
      e.preventDefault();
      html = $(this).jqmData( "html" ) || "";
@@ -719,8 +780,14 @@ $(document).ready(function(){
     $("#CIP").click(function(){
        $("#fotoP").click();
     });
-    $("#CID").click(function(){
-       $("#fotoD").click();
+    $("#elabi").click(function(){
+       $("#elab").click();
+    });
+    $("#radioi").click(function(){
+       $("#radiograf").click();
+    });
+    $("#recei").click(function(){
+       $("#recetaf").click();
     });
     $("#fotoP").change(function(){
         readURL(this);
@@ -892,7 +959,6 @@ getSchedule();
 		saturday = docts[0][10];
 		sunday = docts[0][11];
 		allowed = docts[0][12];
-		console.log(allowed);
 		var d = new Date();
 			 var dd = d.getDate();
     var mm = d.getMonth()+1; //January is 0!

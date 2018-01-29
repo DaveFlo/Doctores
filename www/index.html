@@ -130,7 +130,7 @@
         </tr>
         <tr>
           <td >
-            <center><a ><img src="img/pago.png" width="60" height="60"></a></center>
+            <center><a href="#payment_list" data-transition="slidedown"><img src="img/pago.png" width="60" height="60"></a></center>
             <label class="hola">Pagos</label>  
           </td>
           <td >
@@ -342,6 +342,26 @@
    <ul id="citasUL" data-role="listview"   data-inset="true">
    	 
   </ul>
+  	
+  <div  class="sfootp"  data-position="fixed">
+	
+  </div>
+  </div>
+  </div>
+  
+  <div data-role="page" id="payment_list">
+
+  <div data-role="header" class="toph-p">
+    <h2 >&nbsp;</h2>
+    <a href="#menu" data-role="none" class="rheader2 ui-btn-left" data-transition="slidedown" >&lsaquo; Pagos</a>
+  </div>
+
+  <div data-role="main" class="ui-content calcont">
+  	<br/>
+  	<h1>Historial de pagos</h1>
+  	<br/>
+   <ul id="paymentL" data-role="listview" data-inset="true">
+   </ul>
   	
   <div  class="sfootp"  data-position="fixed">
 	
@@ -657,21 +677,33 @@
 	    <input type="text" class="chooseDT" data-role="none" id="default_datetimepicker"/>
 	    <img width="25px" src="img/cal.png" />
 	 </div>
+	  <br/>
+     <hr class="dividerd" />
+  	 <br/>
+	 <label class="infoe">Motivo de consulta</label>
+  	
+	    <textarea class="mcon" name="mcon"></textarea>
+	   
+	
      <br/>
      <hr class="dividerd" />
   	 <br/>
+  	  <label class="infoe">Selecciona archivos que quieras enviar</label>
   	<div class="ui-grid-b">
     <div class="ui-block-a ">
-    	<img  class="elm-cent" src="img/exam.png" />
+    	<img id="elabi"  class="elm-cent" src="img/exam.png" />
     	<p id="exams" class="upar">Exámenes de laboratorio</p>
+    	<input type="file" data-role="none" class="uinput" name="elab" id="elab"/>
     </div>
     <div class="ui-block-b ">
-    	<img  class="elm-cent" src="img/radio.png" />
+    	<img id="radioi"  class="elm-cent" src="img/radio.png" />
     	<p id="radiog" class="upar">Radiografía</p>
+    	<input type="file" data-role="none" class="uinput" name="radiograf" id="radiograf"/>
     </div>
     <div class="ui-block-c ">
-    	<img  class="elm-cent"  src="img/recetas.png" />
+    	<img id="recei" class="elm-cent"  src="img/recetas.png" />
     	<p id="receta" class="upar">Recetas</p>
+    	<input type="file" data-role="none" class="uinput" name="receta" id="recetaf"/>
     </div>
    </div>
    <br/>
@@ -699,6 +731,7 @@
   	 </div>
   	 <hr class="dividerd" />
   	 <form id="payForm" method="post">
+  	 	
   	 <div class="ui-grid-a">
   	 	 <div class="ui-block-a ">
     	<div class="control-group">
