@@ -72,6 +72,85 @@ function checkC(){
 	});
 
     }
+    function getHP(idc,date){
+    	var hours;
+    	var weekend ,
+		saturday ,
+		sunday ;
+    	$.ajax({
+    		url:"http://www.icone-solutions.com/doct/sqlOP.php",
+    		type: "POST",
+    		async:false,
+    		data:{rid:idc,datep:date},
+    		success:function(data){
+    			
+    			var obj = jQuery.parseJSON(data);
+    			
+    			hours = obj[0];
+    			weekend = obj[1];
+    			saturday = obj[2];
+    			sunday = obj[3];
+    			
+    		},
+    		error:function(){
+    			swal("Error","Revisa tu conexión e intentalo de nuevo","error");
+    		}
+    	});
+    	var disabledp = [];
+ 	if(weekend=="Cerrado"){
+ 		disabledp.push(1);
+ 		disabledp.push(2);
+ 		disabledp.push(3);
+ 		disabledp.push(4);
+ 		disabledp.push(5);
+ 	}
+ 	if(saturday=="Cerrado"){
+ 		disabledp.push(6);
+ 	}
+ 	if(sunday=="Cerrado"){
+ 		disabledp.push(0);
+ 	}
+ 	d = new Date();
+ 	todaytime = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+    	$('#timeP').datetimepicker({
+ 	   formatDate:'Y-m-d',
+ 	   formatTime:'H:i',
+ 	   defaultTime: "9:00",
+ 	   disabledWeekDays: disabledp,
+ 	   allowTimes: hours,
+ 	   minDate: todaytime,
+ 	   startDate: todaytime,
+ 	   onSelectDate:function(ct,$i){
+ 	   	var d = new Date(ct);
+ 	   		html = $(this).jqmData( "html" ) || "";
+ 	        $.mobile.loading( "show", {
+            text: "Cargando Horarios",
+            textVisible: true,
+            theme: "b",
+            textonly: false,
+            html: html
+            });
+ 	   	var now = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+ 	   	$.ajax({
+ 	   		url: "http://www.icone-solutions.com/doct/sqlOP.php",
+	        type: "POST",
+	        data: {sdate:now, cd: 1},
+	        success: function(data){
+	        	$.mobile.loading("hide");
+	        	var hours= jQuery.parseJSON(data);
+	        	
+	        	$i.datetimepicker('setOptions', { allowTimes:hours});
+	        	
+	        },
+	        error: function(){
+	        	swal("Error","No se ha podido conectar al servidor, revisa tu conexión","error");
+	        }
+ 	   	});
+ 	   	
+ 	   	
+       }
+      });
+    }
     function getPD(){
  	var idu = localStorage.getItem("usi");
  	var datat =localStorage.getItem("tipo");
@@ -110,8 +189,37 @@ function checkC(){
 	              }
 	});
  }
+ function getED(){
+ 	var idm = localStorage.getItem("usi");
 
-   function getSchedule(){
+ 	$.ajax({
+	url: "http://www.icone-solutions.com/doct/sqlOP.php",
+	type: "POST",
+	data: {idm:idm,},
+	success: function(data){
+		
+		var obj = jQuery.parseJSON(data);
+		var exp =obj[0][3];
+		
+			$("#uniD").val(obj[0][1]);
+			$("#espD").val(obj[0][0]);
+			$("#cedD").val(obj[0][2]);
+		for(var i =0;i<exp.length;i++){
+			$("#expL").append("<li><div class='edate'>"+exp[i][0]+"</div> <div class='edesc'>"+exp[i][1]+". "+exp[i][2]+"</div></li>")
+		}
+		
+		
+	},
+	error: function(data){
+	              	$.mobile.loading("hide");
+	              	swal("Error","Revisa tu conexión e intentalo de nuevo","error");
+	              }
+	});
+ }
+ var citap=0;
+ var fechap="";
+ function getIDa(){
+ 	
    	var gd = localStorage.getItem("usi");
    	$.ajax({
 	url: "http://www.icone-solutions.com/doct/sqlOP.php",
@@ -122,9 +230,7 @@ function checkC(){
 		
 		var obj= jQuery.parseJSON(data);
 		for(var i=0;i< obj.length;i++){
-			var temp = {date: obj[i][0],
-            title: 'Single Day Event'}
-			datesArray.push(temp);
+			
 			var color ="";
 			var color2 ="";
 			if(obj[i][6]=="Liberado"){
@@ -154,70 +260,68 @@ function checkC(){
 			$("#citasUL").listview('refresh');
 		}
 		
-		 calendar= $('#calp').clndr({
-        lengthOfTime: {
-            months: 1,
-            interval: 1
+		
+	},
+
+	error: function(){
+		swal("Error","Actualmente tu dispositivo no cuenta con una conexión a internet","error");
+	}
+
+        });
+   }
+ 
+ 
+ 
+   function getSchedule(){
+   	datesArray=Array();
+   	var gd = localStorage.getItem("usi");
+   	$.ajax({
+	url: "http://www.icone-solutions.com/doct/sqlOP.php",
+	type: "POST",
+	data: {gd:gd},
+	async: false,
+	success: function(data){
+		
+		var obj= jQuery.parseJSON(data);
+		
+		for(var i=0;i< obj.length;i++){
+			var temp = {start: obj[i][0],
+            title: obj[i][2], id: obj[i][8]}
+			datesArray.push(temp);
+			var color ="";
+			var color2 ="";
+			if(obj[i][6]=="Liberado"){
+				color = "blueb";
+				color2 = "greenp";
+			}else{
+				color="orangeb";
+				color2 = "orangep"
+			}
+		}
+		
+		$('#calendars').fullCalendar({
+        locale: 'es',
+         header: {
+        left: 'prev,next',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay,listWeek'
+      },
+         views: {
+          listWeek: { buttonText: 'L' },
+          month: {buttonText: 'M'},
+           agendaWeek: {buttonText: 'S'},
+            agendaDay: {buttonText: 'D'}
         },
-        events: datesArray,
-        multiDayEvents: {
-        	singleDay: 'date',
-            endDate: 'endDate',
-            startDate: 'startDate'
-        },
-        template: $('#calendar-patient').html(),
-        clickEvents: {
-            click: function (target) {
-                var fc = target.date._i;
-                var patient= localStorage.getItem("usi");
-                 html = $(this).jqmData( "html" ) || "";
-      $.mobile.loading( "show", {
-            text: "Cargando...",
-            textVisible: true,
-            theme: "b",
-            textonly: false,
-            html: html
-    });
-                $.ajax({
-                	url: "http://www.icone-solutions.com/doct/sqlOP.php",
-	                type: "POST",
-	                data: {fechac: fc,patient:patient},
-	              success: function(data){
-	              	$.mobile.loading("hide");
-	              	var obj = jQuery.parseJSON(data);
-	              	$("#schedule").empty();
-	              	if(obj.length==0){
-	              		var mess = "<tbody><tr><td class='hcita'>No hay citas</td><td class='dcita'> -- </td></tr></tbody>"
-	              		$("#schedule").append(mess);
-	              	}else{
-	              		var mess = "<tbody>";
-	              		for(var i=0;i<obj.length;i++){
-	              		  mess += "<tr><td class='hcita'>"+obj[i][1].substring(0, 5)+"</td><td class='dcita'><div> Dr(a). "+obj[i][0]+" </div></td></tr>"
-	              	    }
-	              	     mess += "</tbody>";
-	              	    $("#schedule").append(mess);
-	              	}
-	              	
-	              },
-	              error: function(data){
-	              	$.mobile.loading("hide");
-	              	swal("Error","Revisa tu conexión e intentalo de nuevo","error");
-	              }
-                });
-            },
-            nextInterval: function () {
-                //console.log('Cal-3 next interval');
-            },
-            previousInterval: function () {
-                //console.log('Cal-3 previous interval');
-            },
-            onIntervalChange: function () {
-                //console.log('Cal-3 interval changed');
-            }
-        },
-        
-        moment:moment
-    });
+       eventClick: function(calEvent, jsEvent, view) {
+        citap = calEvent.id;
+        fechap = new Date(calEvent.start._d);
+        $('#modalP').iziModal('startLoading');
+$('#modalP').iziModal('open');
+       },
+         defaultView: 'month',
+        events: datesArray
+   });
+		
 	},
 
 	error: function(){
@@ -228,6 +332,7 @@ function checkC(){
    }
    
    function getAgenda(){
+   		datesArray=Array();
    	var gd = localStorage.getItem("usi");
    	$.ajax({
 	url: "http://www.icone-solutions.com/doct/sqlOP.php",
@@ -238,82 +343,35 @@ function checkC(){
 		
 		var obj= jQuery.parseJSON(data);
 		for(var i=0;i< obj.length;i++){
-			var temp = {date: obj[i][0],
-            title: 'Single Day Event'}
+			var temp = {start: obj[i][0],
+            title: obj[i][2], id:obj[i][5]}
 			datesArray.push(temp);
-			
-			
-   	 
-		
 		
 			
 		}
 		
-		 calendar= $('#agendac').clndr({
-        lengthOfTime: {
-            months: 1,
-            interval: 1
+		$('#calendarsD').fullCalendar({
+        locale: 'es',
+         header: {
+        left: 'prev,next',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay,listWeek'
+      },
+         views: {
+          listWeek: { buttonText: 'L' },
+          month: {buttonText: 'M'},
+           agendaWeek: {buttonText: 'S'},
+            agendaDay: {buttonText: 'D'}
         },
-        events: datesArray,
-        multiDayEvents: {
-        	singleDay: 'date',
-            endDate: 'endDate',
-            startDate: 'startDate'
-        },
-        template: $('#calendar-doc').html(),
-        clickEvents: {
-            click: function (target) {
-                var fc = target.date._i;
-                var doc= localStorage.getItem("usi");
-                 html = $(this).jqmData( "html" ) || "";
-      $.mobile.loading( "show", {
-            text: "Cargando...",
-            textVisible: true,
-            theme: "b",
-            textonly: false,
-            html: html
-    });
-                $.ajax({
-                	url: "http://www.icone-solutions.com/doct/sqlOP.php",
-	                type: "POST",
-	                data: {fechacd: fc,doc:doc},
-	              success: function(data){
-	              	console.log(data);
-	              	$.mobile.loading("hide");
-	              	var obj = jQuery.parseJSON(data);
-	              	$("#scheduleD").empty();
-	              	if(obj.length==0){
-	              		var mess = "<tbody><tr><td class='hcita'>No hay citas</td><td class='dcita'> -- </td></tr></tbody>"
-	              		$("#scheduleD").append(mess);
-	              	}else{
-	              		var mess = "<tbody>";
-	              		for(var i=0;i<obj.length;i++){
-	              		  mess += "<tr><td class='hcita'>"+obj[i][1].substring(0, 5)+"</td><td class='dcita'><div>"+obj[i][0]+" </div></td></tr>"
-	              	    }
-	              	     mess += "</tbody>";
-	              	    $("#scheduleD").append(mess);
-	              	}
-	              	
-	              },
-	              error: function(data){
-	              	$.mobile.loading("hide");
-	              	swal("Error","Revisa tu conexión e intentalo de nuevo","error");
-	              }
-                });
-            },
-            nextInterval: function () {
-                //console.log('Cal-3 next interval');
-            },
-            previousInterval: function () {
-                //console.log('Cal-3 previous interval');
-            },
-            onIntervalChange: function () {
-                //console.log('Cal-3 interval changed');
-            }
-        },
-        
-        moment:moment
-    });
+       eventClick: function(calEvent, jsEvent, view) {
+        citap = calEvent.id;
+        fechap = new Date(calEvent.start._d);
+        $('#modalD').iziModal('startLoading');
+$('#modalD').iziModal('open');
+       },
+         defaultView: 'month',
+        events: datesArray
+   });
 	},
 
 	error: function(){
@@ -332,7 +390,6 @@ function checkC(){
 	async: false,
 	success: function(data){
 		
-		console.log(data);
 		var obj= jQuery.parseJSON(data);
 		for(var i=0;i< obj.length;i++){
 			
@@ -373,9 +430,7 @@ function checkC(){
 	data: {gdp:gd},
 	async: false,
 	success: function(data){
-		console.log(data);
 		var obj= jQuery.parseJSON(data);
-		console.log(obj.length);
 		if(obj.length==0){
 			$("#citasRUL").append(' <li >'+
    	 	'<div class="flexb">'+
@@ -493,8 +548,8 @@ function checkC(){
 	    	$("#receta").val("");
 	    	$("#elab").val("");
 	     	$("#default_datetimepicker").val("");
-	    	var newEv = [{date: horario[0],title:"Single Day Event"}];
-	    	calendar.addEvents(newEv);
+	    	var newEv = [{start: horario[0],title:"Nueva Cita"}];
+	    	$("#calendars").fullCalendar( 'addEventSource', newEv );
             swal("Listo","Tu cita fue registrada exitosamente.","success");
 	    	$.mobile.navigate( "#calendar_p", { transition : "slide",info: "info about the #foo hash" });
 
@@ -560,7 +615,6 @@ function checkC(){
 	cache: false,
 	processData:false,
 	success: function(data){
-		console.log(data);
 	    if(data.toString()=="1"){
 	    	
 	    	
@@ -582,7 +636,39 @@ function checkC(){
 
         });
     }
-    
+    function updateDE(){
+    var form = new FormData($("#datoseForm")[0]);
+    form.append("userm",localStorage.getItem("usi"));
+    $.ajax({
+	url: "http://www.icone-solutions.com/doct/sqlOP.php",
+	type: "POST",
+	data: form,
+	contentType: false,
+	cache: false,
+	processData:false,
+	success: function(data){
+	    if(data.toString()=="1"){
+	    	
+	    	var nl = $("#expD").val().split("/");
+	    	$("#expL").append("<li><div class='edate'>"+nl[0]+"</div> <div class='edesc'>"+nl[1]+". "+nl[2]+"</div></li>")
+            swal("Listo","Tus datos han sido modificados.","success");
+           
+
+	    }else{
+	    	
+	    	
+	    	
+           swal("Error","No se han podido modificar tus datos, revisa tu conexión e intentalo de nuevo","error");
+	    }
+	   
+	},
+
+	error: function(){
+		swal("Error","Actualmente tu dispositivo no cuenta con una conexión a internet","error");
+	}
+
+        });
+    }
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -612,7 +698,6 @@ function checkC(){
         processData:false,
         error: function(xhr, settings, exception){ alert(xhr.responseText)},
         success: function(data){
-        console.log(data);
           $.mobile.loading( "hide" );
           //$("#logac").prop("disabled",false);
           if(data.toString()!=="0"){
@@ -651,7 +736,6 @@ function register(){
 	cache: false,
 	processData:false,
 	success: function(data){
-		 console.log(data)
 	    if(!isNaN(data)){
 	    	var datos = data.toString().split(",");
 	    	
@@ -666,15 +750,146 @@ function register(){
            swal("Error",data.toString(),"error");
 	    }
 	    $("#rega").prop("disabled",false);
+	    },
+	    error: function(){
+	    	swal("Error","Actualmente tu dispositivo no cuenta con una conexión a internet","error");
 	    }
 
         });
     }
+    
+    function cancelC(idc){
+    	$.ajax({
+	url: "http://www.icone-solutions.com/doct/sqlOP.php",
+	type: "POST",
+	data: {idc:idc},
+	success: function(data){
+	    if(data.toString()=="1"){
+	    	if($("#calendars").is(":visible") ){
+	    		$("#calendars").fullCalendar( 'removeEvents', [idc] )
+	    	}else{
+	    		$("#calendarsd").fullCalendar( 'removeEvents', [idc] )
+	    	}
+	    	
+	    	swal("Listo","Tu cita ha sido eliminada exitosamente.","success");
+	    }else{
+	    	swal("Ups!","Tu cita no ha podido ser eliminada.","error");
+	    }
+   },
+  error: function(){
+  	swal("Error","Actualmente tu dispositivo no cuenta con una conexión a internet","error");
+  }
+        });
+    }
 
 $(document).ready(function(){
-	
-	$(function() {
+	$("#modalP").iziModal({
+    history: false,
+    overlayClose: false,
+    width: 600,
+    overlayColor: 'rgba(0, 0, 0, 0.6)',
+    transitionIn: 'bounceInDown',
+    transitionOut: 'bounceOutDown',
+    onOpened: function(modal) {
+    	
+    	getHP(citap,fechap);
+        $.ajax({
+        	url: "http://www.icone-solutions.com/doct/sqlOP.php",
+	        type: "POST",
+	        data: {citap:citap},
+	        success: function(data){
+	        	var jobj = jQuery.parseJSON(data);
+	        	modal.stopLoading();
+	        	$(".doctN").text(jobj[0][2]);
+	        	$(".doctM").text(jobj[0][5]);
+	        	$(".doctPh").text(jobj[0][4]);
+	        	$(".cdate").text(jobj[0][0]);
+	        	$(".hdate").text(jobj[0][1]);
+	        	$(".citaI").css("background-image", "url("+jobj[0][3]+")");
+	        },
+	        error: function(){
+	        	modal.stopLoading();
+	        	$('#modalP').iziModal('close');
+	        }
+        })
+        
+    },
+    onClosed: function() {
+        //console.log('onClosed');  
+    }
+});
+$("#modalD").iziModal({
+		 group: 'grupo1',
+    history: false,
+    overlayClose: false,
+    width: 600,
+    overlayColor: 'rgba(0, 0, 0, 0.6)',
+    transitionIn: 'bounceInDown',
+    transitionOut: 'bounceOutDown',
+    onOpened: function(modal) {
+        $.ajax({
+        	url: "http://www.icone-solutions.com/doct/sqlOP.php",
+	        type: "POST",
+	        data: {citad:citap},
+	        success: function(data){
+	        	var jobj = jQuery.parseJSON(data);
+	        	modal.stopLoading();
+	        	$(".doctN").text(jobj[0][2]);
+	        	$(".doctM").text(jobj[0][5]);
+	        	$(".doctPh").text(jobj[0][4]);
+	        	$(".cdate").text(jobj[0][0]);
+	        	$(".hdate").text(jobj[0][1]);
+	        	$(".citaI").css("background-image", "url("+jobj[0][3]+")");
+	        },
+	        error: function(){
+	        	modal.stopLoading();
+	        	$('#modalD').iziModal('close');
+	        }
+        })
+        
+    },
+    onClosed: function() {
+        //console.log('onClosed');  
+    }
+});
 
+$("#modalP, #modalD").on('click', 'header a', function(event) {
+    event.preventDefault();
+    var $this = $(this);
+    var index = $this.index();
+    $this.addClass('active').siblings('a').removeClass('active');
+    
+    var $sections = $this.closest('div').find('.sections');
+    var $currentSection = $this.closest("div").find("section").eq(index);
+    //var $nextSection = $this.closest("div").find("section").eq(index).siblings('section');
+
+    $sections.css('height', $currentSection.innerHeight());
+
+    function changeHeight(){
+        $this.closest("div").find("section").eq(index).fadeIn().siblings('section').fadeOut(100);
+    }
+
+    if( $currentSection.innerHeight() > $sections.innerHeight() ){
+        changeHeight();
+    } else {
+        setTimeout(function() {
+            changeHeight();
+        }, 150);
+    }
+
+    if( $this.index() === 0 ){
+        $("#modalP .iziModal-content .icon-close").css('background', '#ddd');
+    } else {
+        $("#modalP .iziModal-content .icon-close").attr('style', '');
+    }
+});
+	$(function() {
+    $("#expD").inputmask({
+    mask: "9999 / *{1,256} / *{1,256}",
+    greedy: false,
+     validator: "[A-Za-z0-9 ]"
+    
+  });
                 $("#card").inputmask("9999 9999 9999 9999", {"placeholder": "0000 0000 0000 0000"});
                 $("#cvv").inputmask("999", {"placeholder": "000"});
                $("#expdate").inputmask("99/9999", {"placeholder": "mm/aaaa"});
@@ -692,19 +907,25 @@ $(document).ready(function(){
           }
          }, false);
      
-      $( '#recentA' ).on( 'pageshow',function(event){
+      $( '#recentA' ).on( 'pagebeforeshow',function(event){
       
         
          getScheduleP();
       
       });
-     $( '#calendar_p' ).on( 'pageshow',function(event){
+      $( '#important_d' ).on( 'pagebeforeshow',function(event){
+      
+        
+         getIDa();
+      
+      });
+     $( '#calendar_p' ).on( 'pagebeforeshow',function(event){
       
         
          getSchedule();
       
       });
-      $( '#agenda' ).on( 'pageshow',function(event){
+      $( '#agenda' ).on( 'pagebeforeshow',function(event){
       
         
          getAgenda();
@@ -720,7 +941,7 @@ $(document).ready(function(){
       
         
          getPD();
-      
+         getED();
       });
       $( '#patient_list' ).on( 'pagebeforeshow',function(event){
       
@@ -869,7 +1090,45 @@ $(document).ready(function(){
             }
          });
    });
-    
+   
+   $("#datoseForm").submit(function(e){
+    	e.preventDefault();
+	
+	    swal({
+          title: "¿Estás seguro que tus datos son correctos?",
+          text: "",
+          type: "info",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Aceptar",
+          showLoaderOnConfirm: true,
+          closeOnConfirm: false,
+          cancelButtonText: "Cancelar",
+        },
+        function(isConfirm){
+	        if(isConfirm){
+ 	         updateDE();
+            }
+         });
+   });
+    $(".cancelAp").click(function(e){
+ 	swal({
+          title: "¿Estás seguro que deseas cancelar tu cita?",
+          text: "",
+          type: "info",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Aceptar",
+          showLoaderOnConfirm: true,
+          closeOnConfirm: false,
+          cancelButtonText: "Cancelar",
+        },
+        function(isConfirm){
+	        if(isConfirm){
+ 	         cancelC(citap);
+            }
+         });
+ });
  
  var datosp= Array();
  
@@ -912,7 +1171,7 @@ $(".close").click(function(){
    });
 
 var thisMonth = moment().format('YYYY-MM');
-getSchedule();
+
 
    
 
@@ -970,10 +1229,13 @@ getSchedule();
     if(mm<10){
         mm='0'+mm;
     } 
+    
     todaytp = yyyy+'-'+mm+'-'+dd;
 		if(allowed.length==0){
 			
 			disabledt = [todaytp];
+			dd = '0'+(d.getDate()+1);
+			todaytp = yyyy+'-'+mm+'-'+dd;
 			
 		}else{
 			disabledt = [];
@@ -1019,10 +1281,38 @@ getSchedule();
 	}
 	});
  });
+ 
  $('#np').click(function(e) {
  	e.preventDefault();
+ 	html = $(this).jqmData( "html" ) || "";
+ 	        $.mobile.loading( "show", {
+            text: "Verificando",
+            textVisible: true,
+            theme: "b",
+            textonly: false,
+            html: html
+            });
  	if($(".chooseDT").val()!=""){
- 		$.mobile.navigate( "#payment", {transition:"slidedown" });
+ 		var check = $(".chooseDT").val();
+ 		var doct = $("#doctP").val();
+ 		$.ajax({
+ 			url: "http://www.icone-solutions.com/doct/sqlOP.php",
+	        type: "POST",
+	        data: {checkd:check,docd:doct},
+	        success:function(data){
+	        	$.mobile.loading( "hide");
+	        	if(data.toString()=="1"){
+	        		$.mobile.navigate( "#payment", {transition:"slidedown" });
+	        	}else{
+	        		swal("Ups!",data.toString(),"error");
+	        	}
+	        },
+	        error:function(){
+	        	$.mobile.loading( "hide");
+	        	swal("Error","Revisa tu conexión de internet.","error");
+	        }
+ 		})
+ 		
  	}else{
  		swal("Elige una fecha para continuar","","info");
  	}
@@ -1044,15 +1334,14 @@ getSchedule();
  	if(sunday[0]=="Cerrado"){
  		disabled.push(0);
  	}
- 	
      $('#default_datetimepicker').datetimepicker({
  	   formatDate:'Y-m-d',
  	   formatTime:'H:i',
  	   defaultTime: "9:00",
- 	   disabledDates: disabledt,
  	   disabledWeekDays: disabled,
  	   allowTimes: allowed,
  	   minDate: todaytp,
+ 	   startDate: todaytp,
  	   onSelectDate:function(ct,$i){
  	   	var d = new Date(ct);
  	   		html = $(this).jqmData( "html" ) || "";
@@ -1069,7 +1358,6 @@ getSchedule();
 	        type: "POST",
 	        data: {sdate:now, cd: 1},
 	        success: function(data){
-	        	console.log(data);
 	        	$.mobile.loading("hide");
 	        	allowed= jQuery.parseJSON(data);
 	        	
@@ -1085,6 +1373,10 @@ getSchedule();
        }
       });
    });
+   
+    
+   
+   
    $('input[name="mpay"]').click(function() {
        if($(this).val()=="t"){
        	$("#cPay").show();

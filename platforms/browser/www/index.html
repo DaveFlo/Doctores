@@ -1,24 +1,5 @@
 <!DOCTYPE html>
-<!--
-    Copyright (c) 2012-2016 Adobe Systems Incorporated. All rights reserved.
 
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 <html>
 
 <head>
@@ -29,20 +10,14 @@
     <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
     <meta http-equiv="Content-Security-Policy" content="default-src *; img-src * 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; style-src  'self' 'unsafe-inline' *" />
    
-    <!-- Good default declaration:
-    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
-    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
-    * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
-        * Enable inline JS: add 'unsafe-inline' to default-src
-        * Enable eval(): add 'unsafe-eval' to default-src
-    * Create your own at http://cspisawesome.com
-    -->
-    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
-
+   
     <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css" />
     <link rel="stylesheet" type="text/css" href="css/sweetalert.css" />
     <link rel="stylesheet" type="text/css" href="css/clndr.css" />
     <link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.8.2/fullcalendar.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.8.2/fullcalendar.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/iziModal.min.css" />
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <script type="text/javascript" src="js/jquery-2.1.1.js"></script>
     <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
@@ -241,7 +216,7 @@
 <div data-role="page" id="profileD">
     <div data-role="header" class="toph-p">
     <h2 >&nbsp;</h2>
-    <a href="#menu" data-role="none" class="rheader2 ui-btn-left" data-transition="slidedown" >&lsaquo; Perfil</a>
+    <a href="#menuD" data-role="none" class="rheader2 ui-btn-left" data-transition="slidedown" >&lsaquo; Perfil</a>
   </div>
 
   <div data-role="main" class="ui-content calcont">
@@ -249,7 +224,7 @@
 	
 		<ul class="option-tools items-3">
 			<li><a href="#profileD" data-transition="slide" class="normal-a active">Datos Personales</a></li>
-			<li><a href="#" data-transition="slide" class="normal-a ">Estudios</a></li>
+			<li><a href="#estudios" data-transition="slide" class="normal-a ">Estudios</a></li>
 			<li><a href="#" class="normal-a">Consultorio</a></li>
 		</ul>
 	
@@ -269,6 +244,48 @@
         
         
         
+        <center><input  type="submit" class="gbutton sched"  data-role="none" value="Guardar"></center>
+      </form>
+      
+  	
+  <div  class="sfootp"  data-position="fixed">
+	
+  </div>
+  </div>
+  
+</div>
+<div data-role="page" id="estudios">
+    <div data-role="header" class="toph-p">
+    <h2 >&nbsp;</h2>
+    <a href="#menuD" data-role="none" class="rheader2 ui-btn-left" data-transition="slidedown" >&lsaquo; Perfil</a>
+  </div>
+
+  <div data-role="main" class="ui-content calcont">
+  	
+	
+		<ul class="option-tools items-3">
+			<li><a href="#profileD" data-transition="slide" class="normal-a">Datos Personales</a></li>
+			<li><a href="#estudios" data-transition="slide" class="normal-a  active">Estudios</a></li>
+			<li><a href="#" class="normal-a">Consultorio</a></li>
+		</ul>
+	
+	
+        <form id="datoseForm" >
+        <label class="bluel">Especialidad</label>
+        <input type="text" class="inputg" placeholder="Especialidad" data-clear-btn="true" name="espD" id="espD" value="">
+        <br />
+        <label class="bluel">Universidad</label>
+        <input type="text" class="inputg" placeholder="Universidad" data-clear-btn="true" name="uniD" id="uniD" value="">
+        <br />
+        <label class="bluel">Experiencia</label>
+        <input type="text" class="inputg" placeholder="aaaa / Cargo / Institución" data-clear-btn="true" name="expD" id="expD" value="">
+        <ul id="expL" data-role="none">
+      	
+        </ul>
+        <br />
+        <label class="bluel">Cédula</label>
+        <input type="text" class="inputg" placeholder="Cédula Profesional" data-clear-btn="true" name="cedD" id="cedD" value="">
+        <br />
         <center><input  type="submit" class="gbutton sched"  data-role="none" value="Guardar"></center>
       </form>
       
@@ -386,50 +403,44 @@
 			<li><a href="#map_search"  data-transition="slide" class="plus-s">+</a></li>
 		</ul>
 	
-
-  	<div id="calp" class="cal2">
-  		<script type="text/template" id="calendar-patient">
-            <div class="clndr-controls">
-                <div class="clndr-previous-button">&lsaquo;</div>
-                <div class="month"><%= intervalStart.format('MMMM YYYY')  %></div>
-                <div class="clndr-next-button">&rsaquo;</div>
-            </div>
-           <div class="clearfix">
-            <% _.each(months, function(cal) { %>
-                <div class="cal">
-                   
-                    <div class="clndr-grid">
-                        <div class="days-of-the-week">
-                        <% _.each(daysOfTheWeek, function(day) { %>
-                            <div class="header-day"><%= day %></div>
-                        <% }); %>
-                            <div class="days">
-                            <% _.each(cal.days, function(day) { %>
-                                <div class="<%= day.classes %>"><%= day.day %></div>
-                            <% }); %>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <% }); %>
-            </div>
-            
-        </script>
-  		
-  	</div>
+    <div id="modalP" class="modalSch">
+    	 <button data-iziModal-close class="icon-close">x</button>
+        <header>
+            <a href="" id="signin" class="active">Información</a>
+            <a href="" >Reprogramar</a>
+        </header>
+        <div class="sections">
+                <section >
+                	<div class="contCita">
+                		<div  class="citaI"></div>
+                		<div class="citaIn">
+                			<h2 class="doctN"></h2>
+                			<p class="doctM"></p>
+                			<p class="doctPh"></p>
+                		</div>
+                	</div>
+                   <hr class="divider"/>
+                   <p  >Fecha de la cita: <span class="cdate"></span></p>
+                   <p >Hora de la cita: <span class="hdate"></span></p>
+                    <footer>
+                    	<button data-iziModal-close data-iziModal-transitionOut="bounceOutDown">Cerrar</button>
+                        <button class="cancelAp" type="button">Cancelar Cita</button>
+                    </footer>
+                </section>
+                <section class="hide">
+                    <input type="text" class="chooseDT" data-role="none" id="timeP"/>
+                    
+                    <footer>
+                        <button data-iziModal-close data-iziModal-transitionOut="bounceOutDown">Cerrar</button>
+                        <button class="submit">Reprogramar</button>
+                    </footer>
+                </section>
+        </div>
+    </div>
+  	<div id='calendars'></div>
   	<hr class="dividerd" />
   	
-  		<div class="appointments">
-  			<table id="schedule">
-  				<tbody>
-  				<tr>
-  					<td class="hcita">No hay citas</td>
-  					<td class="dcita"><div>--</div></td>
-  				</tr>
-  				
-  				</tbody>
-  			</table>
-  		</div>
+  		
   	
   </div>
   <div  class="sfootp"  data-position="fixed">
@@ -446,58 +457,46 @@
 
   <div data-role="main" class="ui-content calcont">
   	
-	
-		<ul class="option-tools items-3">
-			<li><a href="#important_d" data-transition="slide" class="normal-a active">Mes</a></li>
-			<li><a href="#" data-transition="slide"  class="normal-a ">Semana</a></li>
-			<li><a href="#" class="normal-a">Día</a></li>
-			<li><a href="#map_search"  data-transition="slide" class="plus-s">+</a></li>
-		</ul>
-	
+	<div id="modalD" class="modalSch">
+    	 <button data-iziModal-close class="icon-close">x</button>
+        <header>
+            <a href="" id="signin" class="active">Información</a>
+            <a href="" >Reprogramar</a>
+        </header>
+        <div class="sections">
+                <section >
+                	<div class="contCita">
+                		<div  class="citaI"></div>
+                		<div class="citaIn">
+                			<h2 class="doctN"></h2>
+                			<p class="doctM"></p>
+                			<p class="doctPh"></p>
+                		</div>
+                	</div>
+                   <hr class="divider"/>
+                   <p  >Fecha de la cita: <span class="cdate"></span></p>
+                   <p >Hora de la cita: <span class="hdate"></span></p>
+                    <footer>
+                    	<button data-iziModal-close data-iziModal-transitionOut="bounceOutDown">Cerrar</button>
+                        <button class="cancelAp" type="button">Cancelar Cita</button>
+                    </footer>
+                </section>
+                <section class="hide">
+                   <input type="text" class="chooseDT" data-role="none" id="timeD"/>
+                    
+                    <footer>
+                        <button data-iziModal-close data-iziModal-transitionOut="bounceOutDown">Cerrar</button>
+                        <button class="submit">Create Account</button>
+                    </footer>
+                </section>
+        </div>
+    </div>
+  	<div id='calendarsD'></div>
 
-  	<div id="agendac" class="cal2">
-  		<script type="text/template" id="calendar-doc">
-            <div class="clndr-controls">
-                <div class="clndr-previous-button">&lsaquo;</div>
-                <div class="month"><%= intervalStart.format('MMMM YYYY')  %></div>
-                <div class="clndr-next-button">&rsaquo;</div>
-            </div>
-           <div class="clearfix">
-            <% _.each(months, function(cal) { %>
-                <div class="cal">
-                   
-                    <div class="clndr-grid">
-                        <div class="days-of-the-week">
-                        <% _.each(daysOfTheWeek, function(day) { %>
-                            <div class="header-day"><%= day %></div>
-                        <% }); %>
-                            <div class="days">
-                            <% _.each(cal.days, function(day) { %>
-                                <div class="<%= day.classes %>"><%= day.day %></div>
-                            <% }); %>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <% }); %>
-            </div>
-            
-        </script>
-  		
-  	</div>
+  	
   	<hr class="dividerd" />
   	
-  		<div class="appointments">
-  			<table id="scheduleD">
-  				<tbody>
-  				<tr>
-  					<td class="hcita">No hay citas</td>
-  					<td class="dcita"><div>--</div></td>
-  				</tr>
-  				
-  				</tbody>
-  			</table>
-  		</div>
+  		
   	
   </div>
   <div  class="sfootp"  data-position="fixed">
@@ -785,64 +784,42 @@
   </div>
   </div>
   
-  <!-- Sección de doctores calendario -->
- <!-- <div data-role="page" id="calendar_d">
+  <div data-role="page" id="calendar_d">
 
-  <div data-role="header" class="toph-d">
-    <h2 class="htitle" >&nbsp;</h2>
-    <a href="#inicio" data-role="none" class="rheader2 ui-btn-right" data-transition="slidedown" >Inicio</a>
+  <div data-role="header" class="toph-p">
+    <h2 >&nbsp;</h2>
+    <a data-rel="back" data-role="none" class="rheader2 ui-btn-left"  >&lsaquo; Agenda</a>
   </div>
 
-  <div data-role="main" class="ui-content logob">
-  	<div id="cald" class="cal2">
-  		<script type="text/template" id="calendar-doctor">
-            <div class="clndr-controls">
-                <div class="clndr-previous-button">&lsaquo;</div>
-                <div class="month"><%= intervalStart.format('MMMM YYYY')  %></div>
-                <div class="clndr-next-button">&rsaquo;</div>
-            </div>
-           <div class="clearfix">
-            <% _.each(months, function(cal) { %>
-                <div class="cal">
-                   
-                    <div class="clndr-grid">
-                        <div class="days-of-the-week">
-                        <% _.each(daysOfTheWeek, function(day) { %>
-                            <div class="header-day"><%= day %></div>
-                        <% }); %>
-                            <div class="days">
-                            <% _.each(cal.days, function(day) { %>
-                                <div class="<%= day.classes %>"><%= day.day %></div>
-                            <% }); %>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <% }); %>
-            </div>
-            
-        </script>
-  		
-  	</div>
-  </div>
-<div  class="sfootd"  data-position="fixed">
+  <div data-role="main" class="ui-content mapcont">
+  	
+	<ul class="option-tools items-3">
+			<li><a href="#agenda" class="normal-a">Mes</a></li>
+			<li><a href="#calendar_d" data-transition="pop" class="normal-a">Semana</a></li>
+			<li><a href="#" class="normal-a  active">Día</a></li>
+		</ul>
+		
 	
-</div>
-  </div>-->
-  <!-- david -->
+  	
+  </div>
+  <div  class="sfootp"  data-position="fixed">
+	
+  </div>
+  </div>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript" src="js/sweetalert.min.js"></script>
     <script src="js/conekta.js"></script>
+     <script src="js/iziModal.min.js"></script>
     <script src="js/underscore-min.js"></script>
     <script src="js/moment.min.js"></script>
     <script src="js/es.js"></script>
-    <script src="js/clndr.js"></script>
+    <script type="text/javascript" src="js/fullcalendar.min.js"></script>
     <script src="js/jquery.datetimepicker.full.min.js"></script>
     <script type="text/javascript" src="https://maps.google.com/maps/api/js"></script>
     <script type="text/javascript" src="js/gmaps.js"></script>
-    <script src="js/jquery.inputmask.js"></script>
-    <script src="js/jquery.inputmask.date.extensions.js"></script>
+    <script type="text/javascript" src="js/jquery.inputmask.bundle.js"></script>
+    <script type="text/javascript" src="js/inputmask.date.extensions.js"></script>
     <script type="text/javascript" src="js/maps.js"></script>
     <script type="text/javascript" src="js/operations.js"></script>
     <script type="text/javascript">
