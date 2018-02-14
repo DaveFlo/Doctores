@@ -34,6 +34,8 @@ function deg2rad(deg) {
     // onError Callback receives a PositionError object
     //
        function onError(error) {
+       	lato= 40.7127837;
+    			longo=-74.00594130000002;
          //swal("Error","Revisa tu conexión a internet para tener acceso a todas las funciones","error");
        }
 
