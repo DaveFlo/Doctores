@@ -1,7 +1,7 @@
 
 
-   var lato=40.7127837;
-   var longo=-74.00594130000002;
+   var lato=23.634501;
+   var longo=-102.55278399999997;
    
    function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
   var R = 6371; // Radius of the earth in km
@@ -34,8 +34,8 @@ function deg2rad(deg) {
     // onError Callback receives a PositionError object
     //
        function onError(error) {
-       	lato= 40.7127837;
-    			longo=-74.00594130000002;
+       	lato= 23.634501;
+    			longo=-102.55278399999997;
          //swal("Error","Revisa tu conexión a internet para tener acceso a todas las funciones","error");
        }
 
