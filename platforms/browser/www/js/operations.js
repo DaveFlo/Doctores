@@ -431,6 +431,7 @@ $('#modalD').iziModal('open');
 	async: false,
 	success: function(data){
 		var obj= jQuery.parseJSON(data);
+		$("#citasRUL").empty();
 		if(obj.length==0){
 			$("#citasRUL").append(' <li >'+
    	 	'<div class="flexb">'+

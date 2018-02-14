@@ -44,7 +44,7 @@ function deg2rad(deg) {
     $(document).ready(function(){
 	 
 
-      $( '#map_search' ).on( 'pageshow',function(event){
+      $( '#map_search' ).on( 'beforepageshow',function(event){
       
         map.refresh();
          
@@ -55,7 +55,7 @@ function deg2rad(deg) {
       
        GMaps.geolocate({
         success: function(position){
-        
+          console.log(position.coords);
           map.setCenter(position.coords.latitude, position.coords.longitude);
         },
         error: function(error){
