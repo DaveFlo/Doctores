@@ -46,13 +46,14 @@ function deg2rad(deg) {
          width: '100%',
         height: '400px',
         lat: lato,
-        lng: longo
+        lng: longo,
+        zoom:5
       });
     $(document).ready(function(){
 	 
 
       $( '#map_search' ).on( 'beforepageshow',function(event){
-      
+       
         map.refresh();
          
       
