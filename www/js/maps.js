@@ -27,7 +27,7 @@ function deg2rad(deg) {
     			lato= 40.7127837;
     			longo=-74.00594130000002;
     		}
-    		console.log(lato+"nanananaasdn");
+    		
       
         };
 
@@ -40,6 +40,7 @@ function deg2rad(deg) {
        }
 
     navigator.geolocation.getCurrentPosition(onSuccess, onError); 
+    console.log(lato+"nanananaasdn");
   var map = new GMaps({
         div: '#map_canvas',
          width: '100%',
