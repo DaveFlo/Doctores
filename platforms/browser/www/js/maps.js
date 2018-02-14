@@ -27,6 +27,7 @@ function deg2rad(deg) {
     			lato= 40.7127837;
     			longo=-74.00594130000002;
     		}
+    		console.log(lato+"nanananaasdn");
       
         };
 
