@@ -1,7 +1,7 @@
 
 
-   var lato=0;
-   var longo=0;
+   var lato=40.7127837;
+   var longo=-74.00594130000002;
    
    function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
   var R = 6371; // Radius of the earth in km
