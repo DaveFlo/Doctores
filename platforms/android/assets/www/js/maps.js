@@ -23,7 +23,10 @@ function deg2rad(deg) {
     	var onSuccess = function(position) {
     		lato = parseFloat(position.coords.latitude) ;
     		longo = parseFloat(position.coords.latitude) ;
-    		
+    		if(lato == 0 || longo ==0){
+    			lato= 40.7127837;
+    			longo=-74.00594130000002;
+    		}
       
         };
 
@@ -55,7 +58,7 @@ function deg2rad(deg) {
       
        GMaps.geolocate({
         success: function(position){
-          console.log(position.coords.latitude+"mamamamamammamamama");
+         
           map.setCenter(position.coords.latitude, position.coords.longitude);
         },
         error: function(error){
