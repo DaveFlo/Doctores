@@ -498,10 +498,13 @@ outline:0;
 	width: 125px;
 	border-top:1px solid #606060;
 }
+.textM{
+	width: 80%;
+}
 .mcon{
 	resize: none;
 	min-height: 150px;
-	margin: 0 15px;;
+	width: 100%;
 }
 .blueb{
 	border-left: 8px solid #00a6ff !important;
@@ -540,8 +543,17 @@ outline:0;
 .fc-toolbar.fc-header-toolbar{
 	margin: 5px ;
 }
+.fc button .fc-icon{
+	color: white !important;
+}
+.fc-button:focus{
+ outline: 0 !important;	
+}
 .fc-button{
+	color: white !important;
 	width:45px !important;
+	background:#00a6ff !important;
+	border-radius: 0 !important;
 }
 .fc-event, .fc-event-dot {
     background-color: #00a6ff;
@@ -550,7 +562,7 @@ outline:0;
 .fc-event{
 	border:none;
 	border-radius:0;
-	min-height: 30px;
+	min-height: 10px;
 }
 .fc-unthemed td.fc-today {
     background: #31e90f85
@@ -736,6 +748,24 @@ outline:0;
 
 
 @media (max-width:500px){
+	
+	.fc-day-grid-event {
+		padding: 0;
+	}
+	.fc-event-container > .fc-day-grid-event.fc-event:first-child{
+		display:block;	
+		width:10px;
+		height:10px;
+		border-radius: 50%;
+	}
+	.fc-event-container > .fc-time-grid-event.fc-event{
+		width:10px;
+		height:10px;
+		border-radius: 50%;
+	}
+	.fc-event-container > .fc-event> .fc-content{
+		display: none;
+	}
 	.fc-center{
 		padding-top: 6px;
 	}

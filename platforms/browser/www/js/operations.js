@@ -227,7 +227,7 @@ function checkC(){
 	data: {gd:gd},
 	async: false,
 	success: function(data){
-		
+		$("#citasUL").empty();
 		var obj= jQuery.parseJSON(data);
 		for(var i=0;i< obj.length;i++){
 			
@@ -313,10 +313,22 @@ function checkC(){
             agendaDay: {buttonText: 'D'}
         },
        eventClick: function(calEvent, jsEvent, view) {
-        citap = calEvent.id;
+       	console.log($(window).width());
+       	if($(window).width()<500){
+       		if(!$(view.el[0]).hasClass("fc-month-view")){
+       		citap = calEvent.id;
         fechap = new Date(calEvent.start._d);
         $('#modalP').iziModal('startLoading');
 $('#modalP').iziModal('open');
+       	}
+       	}else{
+       		citap = calEvent.id;
+        fechap = new Date(calEvent.start._d);
+        $('#modalP').iziModal('startLoading');
+$('#modalP').iziModal('open');
+       	}
+       	
+        
        },
          defaultView: 'month',
         events: datesArray
@@ -501,8 +513,8 @@ $('#modalD').iziModal('open');
 	    	$("#receta").val("");
 	    	$("#elab").val("");
 	    	$("#default_datetimepicker").val("");
-            var newEv = [{date: horario[0],title:"Single Day Event"}];
-	    	calendar.addEvents(newEv);
+            var newEv = [{start: horario[0],title:"Nueva Cita"}];
+	    	$("#calendars").fullCalendar( 'addEventSource', newEv );
             swal("Listo","Tu cita fue registrada exitosamente.","success");
 	    	$.mobile.navigate( "#calendar_p", { transition : "slide",info: "info about the #foo hash" });
 
@@ -739,11 +751,15 @@ function register(){
 	success: function(data){
 	    if(!isNaN(data)){
 	    	var datos = data.toString().split(",");
-	    	
+	    	if($("#tipoR").val()=="pacientes"){
+	    		localStorage.setItem("tipo","pac");
+	    	}else{
+	    		localStorage.setItem("tipo","doc");
+	    	}
             swal("Listo","Tu usuario ha sido registrado exitosamente.","success");
             localStorage.setItem("user",$("#mailR").val());
             localStorage.setItem("usi",data.toString());
-            localStorage.setItem("tipo","pac");
+            
             $.mobile.navigate( "#menu", { transition : "slide",info: "info about the #foo hash" });
 
 
@@ -1193,10 +1209,11 @@ var thisMonth = moment().format('YYYY-MM');
             textonly: false,
             html: html
     });
+    var idug =localStorage.getItem("usi");
  	$.ajax({
 	url: "http://www.icone-solutions.com/doct/sqlOP.php",
 	type: "POST",
-	data: {doctor:d},
+	data: {doctor:d, idug:idug},
 	success: function(data){
 		
 		var docts = jQuery.parseJSON(data);
@@ -1215,6 +1232,8 @@ var thisMonth = moment().format('YYYY-MM');
 		$("#lv").append("Lun-Vie "+docts[0][6]);
 		$("#sat").append("Sábados "+docts[0][7]);
 		$("#dom").append("Domingos "+docts[0][8]);
+		
+		$("#totU").text(docts[0][13])
 		weekend = docts[0][9];
 		saturday = docts[0][10];
 		sunday = docts[0][11];

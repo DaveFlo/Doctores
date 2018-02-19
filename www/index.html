@@ -75,6 +75,11 @@
         <br />
         <input type="password" class="inputg" placeholder="Confirma tu contraseña" data-clear-btn="true" name="passR2" id="pass2"  value="">
         <br />
+        <select id="tipoR" name="tipoR">
+        	<option value="doctores">Doctor</option>
+        	<option value="pacientes">paciente</option>
+        </select>
+        <br />
         <center><input  type="submit" class="gbutton sched"  data-role="none" value="Aceptar"></center>
       </form>
     </div>
@@ -404,7 +409,7 @@
 		</ul>
 	
     <div id="modalP" class="modalSch">
-    	 <button data-iziModal-close class="icon-close">x</button>
+    	 
         <header>
             <a href="" id="signin" class="active">Información</a>
             <a href="" >Reprogramar</a>
@@ -458,7 +463,7 @@
   <div data-role="main" class="ui-content calcont">
   	
 	<div id="modalD" class="modalSch">
-    	 <button data-iziModal-close class="icon-close">x</button>
+    	 
         <header>
             <a href="" id="signin" class="active">Información</a>
             <a href="" >Reprogramar</a>
@@ -680,14 +685,16 @@
      <hr class="dividerd" />
   	 <br/>
 	 <label class="infoe">Motivo de consulta</label>
-  	
-	    <textarea class="mcon" name="mcon"></textarea>
+  	<div class="elm-cent textM">
+  		<textarea data-role="none" class="mcon" name="mcon"></textarea>
+  	</div>
+	    
 	   
 	
      <br/>
      <hr class="dividerd" />
   	 <br/>
-  	  <label class="infoe">Selecciona archivos que quieras enviar</label>
+  	  <label class="infoe">Selecciona archivos que quieras enviar (Número de archivos subidos <span id="totU"></span>/9)</label>
   	<div class="ui-grid-b">
     <div class="ui-block-a ">
     	<img id="elabi"  class="elm-cent" src="img/exam.png" />
