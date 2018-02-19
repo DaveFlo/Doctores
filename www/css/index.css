@@ -490,6 +490,7 @@ outline:0;
 }
 .info_d h1{
 	color: #00a6ff;
+	min-width:200px;
 }
 .info_pay p{
 	font-size: 14px !important;
