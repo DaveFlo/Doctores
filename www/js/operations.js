@@ -696,7 +696,28 @@ $('#modalD').iziModal('open');
     
     
   var connectionStatus = false;
-
+  function reSchedule(){
+  	var form = new FormData($("#repForm")[0]);
+      $.ajax({
+      	url: "http://www.icone-solutions.com/doct/sqlOP.php",
+        type: "POST",
+        data: form,
+        contentType: false,
+        cache: false,
+        processData:false,
+        error: function(xhr, settings, exception){ swal("Error","Revisa tu conexión a internet.","error")},
+        success: function(data){
+        	if(data.toString()=="0"){
+        		$('.modalSch').iziModal('close');
+             	swal("Listo","Tu cita ha sido reprogramada.","success");
+        	}else{
+        		$('.modalSch').iziModal('close');
+             	swal("Listo","Ocurrio un error al hacer tu cambio, por favor inténtalo de nuevo.","error");
+        	}
+             	
+        }
+      });
+  }
    function login(){
 	
     var form = new FormData($("#loginForm")[0]);
@@ -709,7 +730,7 @@ $('#modalD').iziModal('open');
         contentType: false,
         cache: false,
         processData:false,
-        error: function(xhr, settings, exception){ alert(xhr.responseText)},
+        error: function(xhr, settings, exception){ swal("Error","Revisa tu conexión a internet.","error")},
         success: function(data){
           $.mobile.loading( "hide" );
           //$("#logac").prop("disabled",false);
@@ -980,6 +1001,35 @@ $("#modalP, #modalD").on('click', 'header a', function(event) {
     });
     login();
       //form.append("regID",localStorage.getItem('registrationId'));
+     
+  });
+   $('#repForm').submit(function(e){
+     e.preventDefault();
+     if($(".chooseDT").val()!=""){
+ 		var check = $("#timePs").val();
+ 		var doct = $(".doctM").val();
+ 		$.ajax({
+ 			url: "http://www.icone-solutions.com/doct/sqlOP.php",
+	        type: "POST",
+	        data: {checkds:check,docd:doct},
+	        success:function(data){
+	        	if(data.toString()=="0"){
+	        		reSchedule();
+	        	}else{
+	        		swal("Error",data.toString(),"error");
+	        	}
+	        	
+	        },
+	        error:function(){
+	        	
+	        	swal("Error","Revisa tu conexión de internet.","error");
+	        }
+ 		})
+ 		
+ 	}else{
+ 		swal("Elige una fecha para continuar","","info");
+ 	}
+     
      
   });
          
